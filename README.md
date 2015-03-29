@@ -10,6 +10,10 @@
 
 ### Fadecandy Server
 
+#### Install
+
+Follow the instructions on [fadecandy-server-setup](https://learn.adafruit.com/1500-neopixel-led-curtain-with-raspberry-pi-fadecandy/fadecandy-server-setup) to install the Fadecandy server.
+
 #### Configuration
 
 Edit `usr/local/bin/fcserver.json` to change the current devices (add your Fadecandy by using it's unique serial), port, whitepoint, gamma and other stuff. 
@@ -55,6 +59,10 @@ nodemon index.js
 
 
 ### Fadecandy Server
+
+[Install](#install) and [configure](#configure) the server on the Raspberry PI. 
+
+#### Start
 
 Start the server on the Raspberry PI:
 
