@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  
+<head>
+<title>Socket.IO chat</title>
+</head>
+
+<style type="text/css">
+
+body {
+  background: #ddd;
+}
+
+#nerddisco {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%) scale(3, 3);
+      -ms-transform: translate(-50%, -50%) scale(3, 3);
+          transform: translate(-50%, -50%) scale(3, 3);
+  border: 1px solid #f00;
+  /*width: 100%;*/
+}
+
+
+</style>
+
+<body>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+
+<canvas id="nerddisco" width="64" height="64"></canvas>
+
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script>
+  var socket = io();
+
+  // $('form').submit(function(){
+  //   socket.emit('chat message', $('#m').val());
+  //   $('#m').val('');
+  //   return false;
+  // });
+  // 
+  // 
+  // 
+ var canvas = document.getElementById('nerddisco');
+var ctx = canvas.getContext('2d');
+
+  var myImageData = ctx.createImageData(canvas.width, canvas.height);
+
+
+var imageData_width = 64;
+var imageData_height = 1;
+
+
+function draw(offset, size, position) {
+
+
+  for (var i = 0; i < imageData_height; i++) {
+      for (var j = 0; j < imageData_width; j++) {
+        ctx.fillStyle = [
+          'rgba(',
+          (Math.floor(Math.random() * 256)),
+          ',',
+          (Math.floor(Math.random() * 256)),
+          ',',
+          (Math.floor(Math.random() * 256)),
+          ',',
+          1,
+          ')'
+        ].join('');
+        ctx.fillRect(j, i, size, size);
+      }
+    }
+}
+
+
+var animation = setInterval(function() {
+  draw(1, 1, getRandomInt(0, 0));
+  
+  myImageData = ctx.getImageData(0, 0, imageData_width, imageData_height);
+  // console.log(myImageData.data);
+
+  socket.emit('ND.color', myImageData.data);
+
+}, 50);
+
+// Remove to start
+//clearInterval(animation);
+
+
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+</script>
+
+  </body>
+
+</html>
