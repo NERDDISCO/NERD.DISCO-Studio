@@ -12,7 +12,7 @@
 
 #### Install
 
-Follow the instructions on [fadecandy-server-setup](https://learn.adafruit.com/1500-neopixel-led-curtain-with-raspberry-pi-fadecandy/fadecandy-server-setup) to install the Fadecandy server.
+Follow the instructions on the article "[Fadecandy Server Setup](https://learn.adafruit.com/1500-neopixel-led-curtain-with-raspberry-pi-fadecandy/fadecandy-server-setup)" to install the Fadecandy server.
 
 #### Configuration
 
