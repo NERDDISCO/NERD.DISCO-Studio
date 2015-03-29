@@ -60,7 +60,7 @@ nodemon index.js
 
 ### Fadecandy Server
 
-[Install](#install) and [configure](#configure) the server on the Raspberry PI. 
+[Install](#install) and [configure](#configuration) the server on the Raspberry PI. 
 
 #### Start
 
