@@ -1,6 +1,8 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var express = require('express'),
+    app = express(),
+    http = require('http').Server(app),
+    io = require('socket.io')(http)
+;
 
 
 
@@ -13,6 +15,11 @@ var io = require('socket.io')(http);
     }
   };
 
+
+// Enable static files
+app.use(express.static('public'));
+
+// Send the index.html to new clients
 app.get('/', function(req, res){
   res.sendFile('index.html', options);
 });
@@ -28,17 +35,11 @@ var element = 0;
 
 io.on('connection', function(socket) {
 
+  console.log('NERD DISCO - Studio connection');
+
   socket.on('ND.color', function(data){
     pixels = data;
-
-    color.red = data['0'];
-    color.green = data['1'];
-    color.blue = data['2'];
-
-    console.log(pixels);
-
-
-    });
+  });
 
 });
 
@@ -47,46 +48,47 @@ io.on('connection', function(socket) {
 var OPC = new require('./app/opc');
 var client = new OPC('localhost', 7890);
 
-console.log(client.connected);
+
 
 function draw() {
-    var millis = new Date().getTime();
-
     for (var pixel = 1; pixel < 65; pixel++) {
-        var t = pixel * 0.2 + millis * 0.002;
-
-        // color.red = color.red;
-        // color.green = color.green + t;
-        // color.blue = color.blue + t;
-        // 
-        color = getPixel(pixel);
-
-        // console.log(color);
-
-
-        client.setPixel(pixel - 1, color.r, color.g, color.b);
+      color = getPixel(pixel);
+      client.setPixel(pixel - 1, color.r, color.g, color.b);
     }
-    client.writePixels();
+
+    // console.log(client.connected);
+
+    // Connected to fadecandy server
+    //if (client.connected) {
+      client.writePixels();
+    //}
 }
 
+/**
+ * Extract the pixel data from the given position
+ * 
+ * @param  Interger position
+ * 
+ * @return Object pixel
+ */
 function getPixel(position) {
   var pixel = {};
 
-  var _position = position * 4;
+  var _position = position * 3;
 
   // Pixel exists
-  if (pixels !== null && pixels[_position - 1] != undefined) {
-    // Alpha
-    pixel.a = pixels[_position - 1];
+  if (pixels !== null && pixels[_position - 1] !== undefined) {
+    // // Alpha
+    // pixel.a = pixels[_position - 1];
 
     // Blue
-    pixel.b = pixels[_position - 2];
+    pixel.b = pixels[_position - 1];
 
     // Green
-    pixel.g = pixels[_position - 3];
+    pixel.g = pixels[_position - 2];
 
     // Red
-    pixel.r = pixels[_position - 4];
+    pixel.r = pixels[_position - 3];
   } else {
     // Black
     pixel.a = pixel.r = pixel.g = pixel.b = 0;

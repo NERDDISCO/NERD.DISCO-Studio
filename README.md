@@ -18,6 +18,30 @@ Follow the instructions on the article "[Fadecandy Server Setup](https://learn.a
 
 Edit `usr/local/bin/fcserver.json` to change the current devices (add your Fadecandy by using it's unique serial), port, whitepoint, gamma and other stuff. 
 
+##### Example
+
+```json
+{
+        "listen": [null, 7890],
+        "verbose": true,
+
+        "color": {
+                "gamma": 2.5,
+                "whitepoint": [0.98, 1.0, 1.0]
+        },
+
+        "devices": [
+                {
+                        "type": "fadecandy",
+                        "serial": "VVZTRRQARJSBSRKD",
+                        "map": [
+                                [ 0, 0, 0, 64 ]
+                        ]
+                }
+        ]
+}
+```
+
 
 #### Start
 
