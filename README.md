@@ -42,6 +42,11 @@ Edit `usr/local/bin/fcserver.json` to change the current devices (add your Fadec
 }
 ```
 
+#### Whitepoints
+
+Max. for NERDDISCO: "whitepoint": [0.81, 0.83, 0.83]
+Min. for NERDDISCO: "whitepoint": [0.28, 0.3, 0.3]
+
 
 #### Start
 
@@ -104,3 +109,7 @@ Start the server on your local computer:
 ```
 nodemon index.js
 ```
+
+
+
+## fcserver-j

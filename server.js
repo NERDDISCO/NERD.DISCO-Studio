@@ -1,7 +1,8 @@
 var express = require('express'),
     app = express(),
     http = require('http').Server(app),
-    io = require('socket.io')(http)
+    io = require('socket.io')(http),
+    fadecandyClient = require('./app/opc')
 ;
 
 
@@ -17,15 +18,15 @@ var express = require('express'),
 
 
 // Enable static files
-app.use(express.static('public'));
+app.use(express.static('public/asset'));
 
 // Send the index.html to new clients
 app.get('/', function(req, res){
   res.sendFile('index.html', options);
 });
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(1337, function(){
+  console.log('listening on *:1337');
 });
 
 
@@ -39,30 +40,17 @@ io.on('connection', function(socket) {
 
   socket.on('ND.color', function(data){
     pixels = data;
+
+    draw();
   });
 
 });
 
 
 
-var OPC = new require('./app/opc');
-var client = new OPC('localhost', 7890);
+var client = new fadecandyClient('localhost', 7890);
 
 
-
-function draw() {
-    for (var pixel = 1; pixel < 65; pixel++) {
-      color = getPixel(pixel);
-      client.setPixel(pixel - 1, color.r, color.g, color.b);
-    }
-
-    // console.log(client.connected);
-
-    // Connected to fadecandy server
-    //if (client.connected) {
-      client.writePixels();
-    //}
-}
 
 /**
  * Extract the pixel data from the given position
@@ -98,4 +86,54 @@ function getPixel(position) {
   return pixel;
 }
 
-setInterval(draw, 50);
+
+
+function draw() {
+
+    var amount = 64 * 5;
+
+    for (var pixel = 0; pixel < amount; pixel++) {
+      color = getPixel(pixel + 1);
+      client.setPixel(pixel, color.r, color.g, color.b);
+    }
+
+    client.writePixels();
+}
+
+//setInterval(draw, 1000 / 60);
+
+
+
+
+
+
+
+
+
+
+
+
+
+function test_draw() {
+    var millis = new Date().getTime();
+
+    var amount = 64 * 5;
+
+    for (var pixel = 0; pixel < amount; pixel++)
+    {
+
+        var t = pixel * 2.1 + millis * 0.015;
+        var red = (255 * Math.random()) * Math.sin(t + Math.random());
+        var green = (255 * Math.random()) * Math.sin(t + Math.random());
+        var blue = (255 * Math.random()) * Math.sin(t + Math.random());
+
+        client.setPixel(pixel, red, green, blue);
+    }
+    client.writePixels();
+}
+
+
+
+
+
+//setInterval(test_draw, 1000 / 30);

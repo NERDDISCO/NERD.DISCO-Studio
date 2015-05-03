@@ -3,49 +3,52 @@
   
 <head>
 <title>NERD DISCO</title>
+
+<link rel="apple-touch-icon" sizes="57x57" href="/img/apple-touch-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/img/apple-touch-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/img/apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/img/apple-touch-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/img/apple-touch-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/img/android-chrome-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/img/manifest.json">
+<link rel="shortcut icon" href="/img/favicon.ico">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-TileImage" content="/img/mstile-144x144.png">
+<meta name="msapplication-config" content="/img/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+
 </head>
 
 
-<link href="css/advanced.css" rel="stylesheet">
+<link href="css/NERDDISCO.css" rel="stylesheet">
 
 <body>
 
- <div class="meta">
-  <h1>NERD DISCO - Studio (alpha_0.0.0.0.0.1)</h1>
-  <h2 id="meta__track"></h2>
-</div>
+  <div id="nerddisco"></div>
 
 
+  <div class="meta">
+    <h1>NERD DISCO - Studio (alpha_0.0.0.0.0.1)</h1>
+    <h2 id="meta__track"></h2>
+  </div>
 
 
-
-<canvas id="NERDDISCO-Studio-alpha_0_0_0_0_0_1" data-paper-resize="true"></canvas>
-
-
-
-
-
-<div class="player flex">
-  <audio id="soundcloud_player" class="flex--4" controls="" autoplay="false" preload autobuffer></audio>
-  <input id="soundcloud_url" class="flex--4" type="text" name="soundcloud_url" value="https://soundcloud.com/aerochordmusic/bro-safari-scumbag-aero-chord-remix" />
-  <button id="soundcloud_load_url" class="flex--none">Load</button>
-</div>
+  <div class="player flex">
+    <audio id="soundcloud__player" class="flex--4" controls="" autoplay="false" preload autobuffer></audio>
+    <input id="soundcloud__url" class="flex--4" type="text" name="soundcloud_url" value="https://soundcloud.com/aerochordmusic/bro-safari-scumbag-aero-chord-remix" />
+    <button id="soundcloud__load-url" class="flex--none">Load</button>
+  </div>
 
 
-<!-- 
-  <canvas id="nerddisco" width="64" height="64"></canvas>
-  <script src="js/simple.js"></script>
--->
-
-<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.21/paper-full.min.js"></script>
-<script src="https://rawgit.com/davidmerfield/randomColor/master/randomColor.js"></script> 
-<script src="http://connect.soundcloud.com/sdk.js"></script>
-
-<script src="js/advanced.js"></script>
+  <script src="js/NERDDISCO.js"></script>
  
-
   </body>
 
 </html>

@@ -1,0 +1,131 @@
+.ndSelector {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.5); }
+  .ndSelector:after {
+    color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    content: attr(data-name); }
+  .ndSelector[data-visible='false'] {
+    opacity: .2; }
+
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font: 1em sans-serif; }
+
+.flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row; }
+
+.flex--auto {
+  -webkit-box-flex: 1;
+  -webkit-flex: auto;
+  -ms-flex: auto;
+  flex: auto; }
+
+.flex--none {
+  -webkit-box-flex: 0;
+  -webkit-flex: none;
+  -ms-flex: none;
+  flex: none; }
+
+.flex--1 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1; }
+
+.flex--2 {
+  -webkit-box-flex: 2;
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2; }
+
+.flex--3 {
+  -webkit-box-flex: 3;
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 3; }
+
+.flex--4 {
+  -webkit-box-flex: 4;
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4; }
+
+.meta {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: .5em;
+  opacity: .5;
+  color: #fff; }
+
+h1 {
+  font-size: 2em;
+  padding: 0;
+  margin: 0; }
+
+h2 {
+  font-size: 1.25em;
+  padding: 0;
+  margin: .25em 0 0 0; }
+
+#nerddisco {
+  position: relative;
+  width: 100%;
+  height: 100%; }
+
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: .5em 0;
+  opacity: .15;
+  -webkit-filter: blur(6px);
+  filter: blur(6px);
+  -webkit-transition: all .25s ease-in;
+  transition: all .25s ease-in;
+  -webkit-transform: translate(0, 70%);
+  -ms-transform: translate(0, 70%);
+  transform: translate(0, 70%); }
+  .player:hover {
+    opacity: 1;
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    transform: translate(0, 0); }
+
+#soundcloud__player {
+  width: 50%;
+  -webkit-border-radius: 0;
+  border-radius: 0; }
+
+#soundcloud__url {
+  border: none;
+  background: transparent;
+  color: #fff;
+  padding: 0 .25em; }
+
+#soundcloud__load-url {
+  border: none;
+  background: #fff;
+  color: #000; }

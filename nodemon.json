@@ -1,0 +1,15 @@
+{
+  "script": "server.js",
+
+  "verbose": true,
+
+  "ignore": [ "public" ],
+
+  "execMap": {
+    "js": "node --harmony"
+  },
+
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

@@ -27,11 +27,15 @@ OPC.prototype._reconnect = function()
     this.socket = new net.Socket();
     this.connected = false;
 
-    this.socket.onclose = function() {
+    this.socket.on('close', function() {
         console.log("Connection closed");
         _this.socket = null;
         _this.connected = false;
-    };
+    });
+
+    this.socket.on('error', function(error) {
+      console.error('Could not connect to Fadecandy Server.');
+    });
 
     this.socket.connect(this.port, this.host, function() {
         console.log("Connected to " + _this.socket.remoteAddress);
