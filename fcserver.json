@@ -4,13 +4,14 @@
 
         "color": {
                 "gamma": 2.5,
-                "whitepoint": [0.28, 0.3, 0.3]
+                "whitepoint": [0.48, 0.5, 0.5]
         },
 
         "devices": [
                 {
                         "type": "fadecandy",
                         "serial": "VVZTRRQARJSBSRKD",
+                        "interpolate" : true,
                         "map": [
                                 [ 0, 0, 0, 64 ],
                                 [ 0, 64, 64, 64 ],

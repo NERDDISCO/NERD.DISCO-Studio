@@ -1,4 +1,4 @@
-# NERD.DISCO - Studio
+# NERD DISCO - Studio
 
 
 
@@ -16,7 +16,7 @@ Follow the instructions on the article "[Fadecandy Server Setup](https://learn.a
 
 #### Configuration
 
-Edit `usr/local/bin/fcserver.json` to change the current devices (add your Fadecandy by using it's unique serial), port, whitepoint, gamma and other stuff. 
+Edit `usr/local/bin/fcserver.json` to change the current devices (add your Fadecandy by using it's unique serial), port, whitepoint, gamma and other stuff ([explained in the docs](https://github.com/scanlime/fadecandy/blob/master/doc/fc_server_config.md)). 
 
 ##### Example
 
@@ -113,3 +113,12 @@ nodemon index.js
 
 
 ## fcserver-j
+
+
+
+
+-------------------------
+
+## Experimental
+
+http://localhost:8000/?tumblrs=mironart&mode=playback&soundcloud=https://soundcloud.com/express-4/spektral-dnbe-promo-mix-vol-2-15&lul=wut/

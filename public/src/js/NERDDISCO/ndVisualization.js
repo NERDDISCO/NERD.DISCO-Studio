@@ -162,7 +162,9 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 4,
         y : this.canvas_element.height / 4,
-        die_sooner : 0
+        die_sooner : 0,
+        frequency_range : 'sublow',
+        min_frequency : 175
       }),
 
       new ndSquare({
@@ -170,7 +172,19 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.2,
         y : this.canvas_element.height / 2 * 1.2,
-        die_sooner : 2
+        die_sooner : 0,
+        frequency_range : 'low',
+        min_frequency : 175
+      }),
+
+      new ndSquare({
+        ndVisualization: this,
+        ndAudio : this.ndAudio,
+        x : this.canvas_element.width / 2 * 1.2,
+        y : this.canvas_element.height / 2 * 1.2,
+        die_sooner : 10,
+        frequency_range : 'low',
+        min_frequency : 185
       }),
 
       new ndSquare({
@@ -178,7 +192,8 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 4
+        die_sooner : 0,
+        frequency_range : 'lowmid'
       }),
 
       new ndSquare({
@@ -186,7 +201,8 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 6
+        die_sooner : 0,
+        frequency_range : 'mid'
       }),
 
       new ndSquare({
@@ -194,7 +210,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 8
+        die_sooner : 0,
+        frequency_range : 'highmid',
+        min_frequency : 175,
+        size_multiplicator : 1.3
       }),
 
       new ndSquare({
@@ -202,7 +221,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 10
+        die_sooner : 0,
+        frequency_range : 'highmid',
+        min_frequency : 180,
+        size_multiplicator : 1.3
       }),
 
       new ndSquare({
@@ -210,7 +232,22 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 12
+        die_sooner : 10,
+        frequency_range : 'highmid',
+        min_frequency : 180,
+        size_multiplicator : 1.3
+      }),
+
+
+      new ndSquare({
+        ndVisualization: this,
+        ndAudio : this.ndAudio,
+        x : this.canvas_element.width / 2 * 1.15,
+        y : this.canvas_element.height / 2 * 1.15,
+        die_sooner : 0,
+        frequency_range : 'high',
+        min_frequency : 175,
+        size_multiplicator : 1.5
       }),
 
       new ndSquare({
@@ -218,7 +255,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 20
+        die_sooner : 0,
+        frequency_range : 'high',
+        min_frequency : 180,
+        size_multiplicator : 1.5
       }),
 
       new ndSquare({
@@ -226,7 +266,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 25
+        die_sooner : 10,
+        frequency_range : 'high',
+        min_frequency : 180,
+        size_multiplicator : 1.5
       }),
 
       new ndSquare({
@@ -234,7 +277,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 35
+        die_sooner : 0,
+        frequency_range : 'superhigh',
+        min_frequency : 165,
+        size_multiplicator : 1.7
       }),
 
       new ndSquare({
@@ -242,7 +288,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 40
+        die_sooner : 0,
+        frequency_range : 'superhigh',
+        min_frequency : 175,
+        size_multiplicator : 1.7
       })
     );
 
@@ -309,29 +358,7 @@ ndVisualization.prototype = {
     for (var i = 0; i < this.element_queue.length; i++) {
       this.element_queue[i].draw();
     }
-
-    /*
-    var frequency = getRandomInt(0, 255);
     
-    this.canvas_context.fillStyle = "hsla(" + (360 / 255 * frequency) + ", 100%, 60%, .1)";
-    
-    frequency = frequency * Math.random() + frequency;
-    
-    this.canvas_context.save();
-    
-    this.canvas_context.translate(this.canvas_element.width / 2,this.canvas_element.height / 2);
-    this.canvas_context.rotate((Math.PI/180) * frequency);
-    
-    this.canvas_context.fillRect(this.canvas_element.width / 2 - frequency / 2, this.canvas_element.height / 2 - frequency / 2, frequency, frequency);
-    this.canvas_context.restore();
-    this.canvas_context.save();
-    
-    //this.canvas_context.rotate((Math.PI/180)*25);
-    this.canvas_context.fillRect(this.canvas_element.width / 2.5 - frequency / 2, this.canvas_element.height / 2 - frequency / 2, frequency, frequency);
-    this.canvas_context.restore();
-    
-    this.canvas_context.fillRect(this.canvas_element.width / 1.5 - frequency / 2, this.canvas_element.height / 2 - frequency / 2, frequency, frequency);
-*/
   },
   
   

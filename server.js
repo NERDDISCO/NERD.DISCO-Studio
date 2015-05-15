@@ -2,19 +2,23 @@ var express = require('express'),
     app = express(),
     http = require('http').Server(app),
     io = require('socket.io')(http),
-    fadecandyClient = require('./app/opc')
+    fadecandyClient = require('./app/fadecandy-client')
 ;
 
 
 
- var options = {
-    root: __dirname + '/public/',
-    dotfiles: 'deny',
-    headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-    }
-  };
+var env = process.env.NODE_ENV || 'live';
+
+
+
+var options = {
+  root: __dirname + '/public/',
+  dotfiles: 'deny',
+  headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+  }
+};
 
 
 // Enable static files
@@ -30,17 +34,61 @@ http.listen(1337, function(){
 });
 
 
-var color = { red : 0, green : 0, blue : 0 };
+// // New client connection was created
+// io.on('connection', function(socket) {
+
+//   if (env === 'live') {
+
+//     console.log('NERD DISCO - Studio connection');
+
+//     // Received and LED array from the client
+//     socket.on('ND.color', function(data){
+//       // Save the data
+//       pixels = data;
+
+//       // Send the colors from the client to the fadecandy-server
+//       draw();
+//     });
+
+//   }
+
+// });
+// 
+// 
+// 
+// 
+// 
+
+
 var pixels = null;
-var element = 0;
+var color = { red : 0, green : 0, blue : 0 };
 
-io.on('connection', function(socket) {
+// Connect to the Fadecandy Server
+var client = new fadecandyClient('nerddisco.slave', 7890);
 
-  console.log('NERD DISCO - Studio connection');
 
-  socket.on('ND.color', function(data){
+
+
+
+
+
+
+/**
+ * Connections from the browser (NERDDISCO Studio)
+ */
+// Create custom namespace
+var socket_studio = io.of('/NERDDISCO-Studio');
+
+// Listen to connections on this custom namespace
+socket_studio.on('connection', function(socket) {
+  console.log('NERD DISCO - Studio connected');
+
+  // Received and LED array from the client
+  socket.on('NERDDISCO.input', function(data) {
+    // // Send the data to the slaves
+    // socket_slaves.emit('NERDDISCO.output', data);
+
     pixels = data;
-
     draw();
   });
 
@@ -48,7 +96,37 @@ io.on('connection', function(socket) {
 
 
 
-var client = new fadecandyClient('localhost', 7890);
+// /**
+//  * Connections from Raspberry PI
+//  */
+// // Create custom namespace
+// var socket_slaves = io.of('/NERDDISCO-Slave');
+
+// // Listen to connections on this custom namespace
+// socket_slaves.on('connection', function(socket) {
+//   console.log('NERD DISCO - Slave connected');
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -66,9 +144,6 @@ function getPixel(position) {
 
   // Pixel exists
   if (pixels !== null && pixels[_position - 1] !== undefined) {
-    // // Alpha
-    // pixel.a = pixels[_position - 1];
-
     // Blue
     pixel.b = pixels[_position - 1];
 
@@ -86,8 +161,6 @@ function getPixel(position) {
   return pixel;
 }
 
-
-
 function draw() {
 
     var amount = 64 * 5;
@@ -99,41 +172,3 @@ function draw() {
 
     client.writePixels();
 }
-
-//setInterval(draw, 1000 / 60);
-
-
-
-
-
-
-
-
-
-
-
-
-
-function test_draw() {
-    var millis = new Date().getTime();
-
-    var amount = 64 * 5;
-
-    for (var pixel = 0; pixel < amount; pixel++)
-    {
-
-        var t = pixel * 2.1 + millis * 0.015;
-        var red = (255 * Math.random()) * Math.sin(t + Math.random());
-        var green = (255 * Math.random()) * Math.sin(t + Math.random());
-        var blue = (255 * Math.random()) * Math.sin(t + Math.random());
-
-        client.setPixel(pixel, red, green, blue);
-    }
-    client.writePixels();
-}
-
-
-
-
-
-//setInterval(test_draw, 1000 / 30);

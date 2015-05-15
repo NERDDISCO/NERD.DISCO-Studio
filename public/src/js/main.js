@@ -47,6 +47,7 @@ var NERDDISCO_audio = new ndAudio({
 
 
 
+
 /*
  * Visualization
  */
@@ -72,16 +73,19 @@ var NERDDISCO_visualization = new ndVisualization({
 /*
  * SoundCloud
  */
-var NERDDISCO_soundcloud = new ndSoundcloud({
-  ndAudio : NERDDISCO_audio,
-  clientID : 'dce5652caa1b66331903493735ddd64d',
-  //trackURL : 'https://soundcloud.com/blaize323/spongebob-bounce-pants-blaize-remix-edit',
-  // trackURL : 'https://soundcloud.com/dimitrivegasandlikemike/dimitri-vegas-like-mike-vs-ummet-ozcan-the-hum-out-2004-on-beatport'
-  // trackURL : 'https://soundcloud.com/bassnectar/08-noise-ft-donnis'
-  trackURL : 'https://soundcloud.com/steveaoki/steve-aoki-born-to-get-wild-feat-will-i-am-club-edition'
-});
+// var NERDDISCO_soundcloud = new ndSoundcloud({
+//   ndAudio : NERDDISCO_audio,
+//   clientID : 'dce5652caa1b66331903493735ddd64d',
+//   //trackURL : 'https://soundcloud.com/blaize323/spongebob-bounce-pants-blaize-remix-edit',
+//   // trackURL : 'https://soundcloud.com/dimitrivegasandlikemike/dimitri-vegas-like-mike-vs-ummet-ozcan-the-hum-out-2004-on-beatport'
+//   // trackURL : 'https://soundcloud.com/bassnectar/08-noise-ft-donnis'
+//   trackURL : 'https://soundcloud.com/steveaoki/steve-aoki-born-to-get-wild-feat-will-i-am-club-edition'
+// });
 
-NERDDISCO_soundcloud.loadTrack();
+// NERDDISCO_soundcloud.loadTrack();
+// 
+// 
+NERDDISCO_audio.updateMediaElement('http://nerddiscodata.local/6495972_The_Hum_Original_Mix.mp3');
 
 
 
@@ -90,9 +94,7 @@ NERDDISCO_soundcloud.loadTrack();
 /*
  * Connector
  */
-var NERDDISCO_connector = new ndConnector({
-
-});
+var NERDDISCO_connector = new ndConnector({});
 
 
 
@@ -104,7 +106,7 @@ var NERDDISCO_connector = new ndConnector({
  * - LED
  * - audio data
  */
-var fps = 60;
+var fps = 30;
 var audioData;
 
 function update() {

@@ -64,9 +64,8 @@ ndAudio.prototype = {
     // Update the src attribute of the mediaElement
     this.mediaElement.setAttribute('src', this.mediaElement_src);
 
-    // 
+    // Set the volume of the mediaElement
     this.mediaElement.volume = this.mediaElement_volume;
-
 
     
     // Pause playback

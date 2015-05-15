@@ -445,9 +445,8 @@ ndAudio.prototype = {
     // Update the src attribute of the mediaElement
     this.mediaElement.setAttribute('src', this.mediaElement_src);
 
-    // 
+    // Set the volume of the mediaElement
     this.mediaElement.volume = this.mediaElement_volume;
-
 
     
     // Pause playback
@@ -599,7 +598,10 @@ ndAudio.prototype = {
 }; // / ndAudio.prototype
 function ndConnector(args) {
 
-  this.url = args.url || 'http://localhost:1337';
+  this.url = args.url || 'http://nerddisco.master:1337';
+
+  // The socket namespace
+  this.namespace = args.namespace || 'NERDDISCO-Studio';
 
   this.webSocket = null;
 
@@ -618,7 +620,7 @@ ndConnector.prototype = {
   init : function() {
 
     // Create a new Web Socket client using the socket.io-client
-    this.webSocket = io(this.url);
+    this.webSocket = io(this.url + '/' + this.namespace);
 
   }, // / ndConnector.prototype.init
 
@@ -626,8 +628,10 @@ ndConnector.prototype = {
 
 
   sendLEDs : function(leds) {
-    this.webSocket.emit('ND.color', leds);
-  } // / ndConnector.prototype.sendOPCData
+
+    this.webSocket.emit('NERDDISCO.input', leds);
+
+  } // / ndConnector.prototype.sendLEDs
 
 }; // / ndConnector.prototype
 /**
@@ -931,7 +935,6 @@ ndSoundcloud.prototype = {
   } // / loadStream
 
 }; // / ndSoundcloud.prototype
-
 function ndSquare(args) {
   this.x = args.x || 0;
   this.y = args.y || 0;
@@ -961,6 +964,12 @@ function ndSquare(args) {
   this.color = args.color || null;
   this.opacity = args.opacity || 0.35;
 
+
+  this.frequency_range = args.frequency_range || 'null';
+
+
+  this.min_frequency = args.min_frequency || 185;
+
   this.frequency = 0;
   this._frequency = this.frequency;
 
@@ -969,6 +978,12 @@ function ndSquare(args) {
 
   this.ratio_x = 0;
   this.ratio_y = 0;
+
+
+  this.size_multiplicator = args.size_multiplicator || 1.2;
+
+
+  this.change_color = [ 'highmid', 'high', 'superhigh' ];
 
 
   this._delay = 0;
@@ -992,16 +1007,16 @@ ndSquare.prototype = {
 
   draw : function() {
 
-    if (this.ndAudio.audioGroupedFrequencyData !== null) {
+    if (this.ndAudio.audioGroupedFrequencyData !== null && typeof this.ndAudio.audioGroupedFrequencyData[this.frequency_range] !== 'undefined') {
 
-      this.frequency = this.ndAudio.audioGroupedFrequencyData.mid.value;
+      this.frequency = this.ndAudio.audioGroupedFrequencyData[this.frequency_range].value;
 
       if (this.life++ > this.max_life) {
         this.max_life = this.frequency / 6;
 
         this.life = 0;
 
-        this.opacity = 0.35;
+        this.opacity = 0.65;
 
         this._width = this.width;
         this._height = this.height;
@@ -1020,8 +1035,8 @@ ndSquare.prototype = {
       }
 
       // Fade out
-      if (this.life > this.max_life * 0.6) {
-        this.opacity -= 0.025;
+      if (this.life > (this.max_life * 0.8)) {
+        this.opacity -= 0.075;
 
         if (this.opacity < 0) {
           this.drawing = false;
@@ -1030,27 +1045,31 @@ ndSquare.prototype = {
       }
 
 
-      if (!this.drawing && this.frequency >= 185 && this._delay++ >= this.die_sooner) {
+      if (!this.drawing && this.frequency >= this.min_frequency && this._delay++ >= this.die_sooner) {
         this.life = 0;
         this.max_life -= this.die_sooner;
         this.drawing = true;
 
-        this.ratio_x = Math.random();
-        this.ratio_y = Math.random();
+        //this.ratio_x = Math.random();
+        //this.ratio_y = Math.random();
+        this.ratio_x = this.ratio_y = 1;
       }
 
-      if (!this.drawing && this.frequency < 185) {
+      if (!this.drawing && this.frequency < this.min_frequency) {
         this._delay = 0;
       }
 
 
       if (this.drawing) {
-        this.color += this.life;
+
+        if (this.change_color.indexOf(this.frequency_range) != -1) {
+          this.color += this.life;
+        }
 
         this.canvas_context.fillStyle = "hsla(" + this.color + ", 100%, 60%, "+ this.opacity +")";
 
-        this._width += (this.life * this.ratio_x * 1.2);
-        this._height += (this.life * this.ratio_y * 1.4);
+        this._width += (this.life * this.ratio_x * this.size_multiplicator);
+        this._height += (this.life * this.ratio_y * this.size_multiplicator);
         
         this.canvas_context.fillRect(
           this.x - this._width / 2,
@@ -1246,7 +1265,9 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 4,
         y : this.canvas_element.height / 4,
-        die_sooner : 0
+        die_sooner : 0,
+        frequency_range : 'sublow',
+        min_frequency : 175
       }),
 
       new ndSquare({
@@ -1254,7 +1275,19 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.2,
         y : this.canvas_element.height / 2 * 1.2,
-        die_sooner : 2
+        die_sooner : 0,
+        frequency_range : 'low',
+        min_frequency : 175
+      }),
+
+      new ndSquare({
+        ndVisualization: this,
+        ndAudio : this.ndAudio,
+        x : this.canvas_element.width / 2 * 1.2,
+        y : this.canvas_element.height / 2 * 1.2,
+        die_sooner : 10,
+        frequency_range : 'low',
+        min_frequency : 185
       }),
 
       new ndSquare({
@@ -1262,7 +1295,8 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 4
+        die_sooner : 0,
+        frequency_range : 'lowmid'
       }),
 
       new ndSquare({
@@ -1270,7 +1304,8 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 6
+        die_sooner : 0,
+        frequency_range : 'mid'
       }),
 
       new ndSquare({
@@ -1278,7 +1313,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 8
+        die_sooner : 0,
+        frequency_range : 'highmid',
+        min_frequency : 175,
+        size_multiplicator : 1.3
       }),
 
       new ndSquare({
@@ -1286,7 +1324,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 10
+        die_sooner : 0,
+        frequency_range : 'highmid',
+        min_frequency : 180,
+        size_multiplicator : 1.3
       }),
 
       new ndSquare({
@@ -1294,7 +1335,22 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 12
+        die_sooner : 10,
+        frequency_range : 'highmid',
+        min_frequency : 180,
+        size_multiplicator : 1.3
+      }),
+
+
+      new ndSquare({
+        ndVisualization: this,
+        ndAudio : this.ndAudio,
+        x : this.canvas_element.width / 2 * 1.15,
+        y : this.canvas_element.height / 2 * 1.15,
+        die_sooner : 0,
+        frequency_range : 'high',
+        min_frequency : 175,
+        size_multiplicator : 1.5
       }),
 
       new ndSquare({
@@ -1302,7 +1358,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 20
+        die_sooner : 0,
+        frequency_range : 'high',
+        min_frequency : 180,
+        size_multiplicator : 1.5
       }),
 
       new ndSquare({
@@ -1310,7 +1369,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 25
+        die_sooner : 10,
+        frequency_range : 'high',
+        min_frequency : 180,
+        size_multiplicator : 1.5
       }),
 
       new ndSquare({
@@ -1318,7 +1380,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 35
+        die_sooner : 0,
+        frequency_range : 'superhigh',
+        min_frequency : 165,
+        size_multiplicator : 1.7
       }),
 
       new ndSquare({
@@ -1326,7 +1391,10 @@ ndVisualization.prototype = {
         ndAudio : this.ndAudio,
         x : this.canvas_element.width / 2 * 1.15,
         y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 40
+        die_sooner : 0,
+        frequency_range : 'superhigh',
+        min_frequency : 175,
+        size_multiplicator : 1.7
       })
     );
 
@@ -1393,29 +1461,7 @@ ndVisualization.prototype = {
     for (var i = 0; i < this.element_queue.length; i++) {
       this.element_queue[i].draw();
     }
-
-    /*
-    var frequency = getRandomInt(0, 255);
     
-    this.canvas_context.fillStyle = "hsla(" + (360 / 255 * frequency) + ", 100%, 60%, .1)";
-    
-    frequency = frequency * Math.random() + frequency;
-    
-    this.canvas_context.save();
-    
-    this.canvas_context.translate(this.canvas_element.width / 2,this.canvas_element.height / 2);
-    this.canvas_context.rotate((Math.PI/180) * frequency);
-    
-    this.canvas_context.fillRect(this.canvas_element.width / 2 - frequency / 2, this.canvas_element.height / 2 - frequency / 2, frequency, frequency);
-    this.canvas_context.restore();
-    this.canvas_context.save();
-    
-    //this.canvas_context.rotate((Math.PI/180)*25);
-    this.canvas_context.fillRect(this.canvas_element.width / 2.5 - frequency / 2, this.canvas_element.height / 2 - frequency / 2, frequency, frequency);
-    this.canvas_context.restore();
-    
-    this.canvas_context.fillRect(this.canvas_element.width / 1.5 - frequency / 2, this.canvas_element.height / 2 - frequency / 2, frequency, frequency);
-*/
   },
   
   
@@ -1620,6 +1666,7 @@ var NERDDISCO_audio = new ndAudio({
 
 
 
+
 /*
  * Visualization
  */
@@ -1645,16 +1692,19 @@ var NERDDISCO_visualization = new ndVisualization({
 /*
  * SoundCloud
  */
-var NERDDISCO_soundcloud = new ndSoundcloud({
-  ndAudio : NERDDISCO_audio,
-  clientID : 'dce5652caa1b66331903493735ddd64d',
-  //trackURL : 'https://soundcloud.com/blaize323/spongebob-bounce-pants-blaize-remix-edit',
-  // trackURL : 'https://soundcloud.com/dimitrivegasandlikemike/dimitri-vegas-like-mike-vs-ummet-ozcan-the-hum-out-2004-on-beatport'
-  // trackURL : 'https://soundcloud.com/bassnectar/08-noise-ft-donnis'
-  trackURL : 'https://soundcloud.com/steveaoki/steve-aoki-born-to-get-wild-feat-will-i-am-club-edition'
-});
+// var NERDDISCO_soundcloud = new ndSoundcloud({
+//   ndAudio : NERDDISCO_audio,
+//   clientID : 'dce5652caa1b66331903493735ddd64d',
+//   //trackURL : 'https://soundcloud.com/blaize323/spongebob-bounce-pants-blaize-remix-edit',
+//   // trackURL : 'https://soundcloud.com/dimitrivegasandlikemike/dimitri-vegas-like-mike-vs-ummet-ozcan-the-hum-out-2004-on-beatport'
+//   // trackURL : 'https://soundcloud.com/bassnectar/08-noise-ft-donnis'
+//   trackURL : 'https://soundcloud.com/steveaoki/steve-aoki-born-to-get-wild-feat-will-i-am-club-edition'
+// });
 
-NERDDISCO_soundcloud.loadTrack();
+// NERDDISCO_soundcloud.loadTrack();
+// 
+// 
+NERDDISCO_audio.updateMediaElement('http://nerddiscodata.local/6495972_The_Hum_Original_Mix.mp3');
 
 
 
@@ -1663,9 +1713,7 @@ NERDDISCO_soundcloud.loadTrack();
 /*
  * Connector
  */
-var NERDDISCO_connector = new ndConnector({
-
-});
+var NERDDISCO_connector = new ndConnector({});
 
 
 
@@ -1677,7 +1725,7 @@ var NERDDISCO_connector = new ndConnector({
  * - LED
  * - audio data
  */
-var fps = 60;
+var fps = 30;
 var audioData;
 
 function update() {

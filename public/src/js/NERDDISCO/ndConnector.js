@@ -1,6 +1,9 @@
 function ndConnector(args) {
 
-  this.url = args.url || 'http://localhost:1337';
+  this.url = args.url || 'http://nerddisco.master:1337';
+
+  // The socket namespace
+  this.namespace = args.namespace || 'NERDDISCO-Studio';
 
   this.webSocket = null;
 
@@ -19,7 +22,7 @@ ndConnector.prototype = {
   init : function() {
 
     // Create a new Web Socket client using the socket.io-client
-    this.webSocket = io(this.url);
+    this.webSocket = io(this.url + '/' + this.namespace);
 
   }, // / ndConnector.prototype.init
 
@@ -27,7 +30,9 @@ ndConnector.prototype = {
 
 
   sendLEDs : function(leds) {
-    this.webSocket.emit('ND.color', leds);
-  } // / ndConnector.prototype.sendOPCData
+
+    this.webSocket.emit('NERDDISCO.input', leds);
+
+  } // / ndConnector.prototype.sendLEDs
 
 }; // / ndConnector.prototype
