@@ -1934,6 +1934,8 @@ var ndUltraSquare = (function (_ndVisualizationElement) {
 
     this._angle = this.angle;
 
+    this.midiInputCode = args.midiInputCode || null;
+
     this.audio = {
       frequency: 0
     };
@@ -1945,80 +1947,72 @@ var ndUltraSquare = (function (_ndVisualizationElement) {
     key: 'draw',
     value: function draw() {
 
-      if (this.ndAudio.audioGroupedFrequencyData !== null && typeof this.ndAudio.audioGroupedFrequencyData[this.range] !== 'undefined') {
+      // The element on the MIDI input exists
+      if (this.ndVisualization.ndMidi.inputElements[this.midiInputCode] !== undefined) {
 
-        this.ctx.save();
+        // The element is pressed
+        if (this.ndVisualization.ndMidi.inputElements[this.midiInputCode].pressed) {
 
-        this.ctx.globalCompositeOperation = 'lighten';
+          // Audio data available
+          if (this.ndAudio.audioGroupedFrequencyData !== null && typeof this.ndAudio.audioGroupedFrequencyData[this.range] !== 'undefined') {
 
-        this._x = this.canvas.width / 2 + this.x;
-        this._y = this.canvas.height / 2 + this.y;
+            this.ctx.save();
 
-        this.audio.frequency = this.ndAudio.audioGroupedFrequencyData[this.range].value;
-        this._color = this.color + 360 / 255 * this.audio.frequency;
-        this._r = this.audio.frequency / 255 * this.r;
+            this.ctx.globalCompositeOperation = 'lighten';
 
-        this._width = this.width;
-        this._height = this.height;
+            this._x = this.canvas.width / 2 + this.x;
+            this._y = this.canvas.height / 2 + this.y;
 
-        this.ctx.beginPath();
+            this.audio.frequency = this.ndAudio.audioGroupedFrequencyData[this.range].value;
+            this._color = this.color + 360 / 255 * this.audio.frequency;
+            this._r = this.audio.frequency / 255 * this.r;
 
-        if (this.audio.frequency >= this.trigger) {
+            this._width = this.width;
+            this._height = this.height;
 
-          this.ctx.globalAlpha = 0.05;
+            this.ctx.beginPath();
 
-          this.angle_factor = 2;
+            this.ctx.globalAlpha = 0.05;
 
-          this._color = window.getRandomInt(0, 360);
+            this.angle_factor = 2;
 
-          this.ctx.fillStyle = 'hsla(' + this._color + ', 100%, 60%, .65)';
+            this._color = window.getRandomInt(0, 360);
 
-          this.ctx.translate(this._x, this._y);
+            this.ctx.fillStyle = 'hsla(' + this._color + ', 100%, 60%, .65)';
 
-          this.ctx.rotate(this._angle * Math.PI / 180);
+            this.ctx.translate(this._x, this._y);
 
-          this.factor = 2.5 * (this.audio.frequency / 255);
+            this.ctx.rotate(this._angle * Math.PI / 180);
 
-          this._width *= this.factor;
-          this._height *= this.factor;
+            this.factor = 2.5 * (this.audio.frequency / 255);
 
-          this.ctx.fillRect(-(this._width / 2), -(this._height / 2), this._width, this._height);
+            this._width *= this.factor;
+            this._height *= this.factor;
 
-          this.factor *= 0.45;
+            this.ctx.fillRect(-(this._width / 2), -(this._height / 2), this._width, this._height);
 
-          this._width *= this.factor;
-          this._height *= this.factor;
+            this.factor *= 0.45;
 
-          this.ctx.clearRect(-(this._width / 2), -(this._height / 2), this._width, this._height);
-        } else {
+            this._width *= this.factor;
+            this._height *= this.factor;
 
-          this.angle_factor = 0;
+            this.ctx.clearRect(-(this._width / 2), -(this._height / 2), this._width, this._height);
 
-          this.ctx.globalAlpha = 0;
+            this._angle += this.angle_factor;
 
-          //this._color = window.getRandomInt(0, 180);
+            if (this._angle > 360) {
+              this._angle = 0;
+            }
 
-          this.ctx.fillStyle = 'hsla(' + this._color + ', 100%, 60%, .65)';
-
-          this.ctx.translate(this._x, this._y);
-
-          this.ctx.rotate(this._angle * Math.PI / 180);
-
-          this.ctx.fillRect(-(this._width / 2), -(this._height / 2), this._width, this._height);
+            this.ctx.closePath();
+            this.ctx.stroke();
+            this.ctx.fill();
+            this.ctx.restore();
+          }
         }
-
-        this._angle += this.angle_factor;
-
-        if (this._angle > 360) {
-          this._angle = 0;
-        }
-
-        this.ctx.closePath();
-        this.ctx.stroke();
-        this.ctx.fill();
-        this.ctx.restore();
       }
-    }
+    } // / draw
+
   }]);
 
   return ndUltraSquare;
@@ -2117,6 +2111,7 @@ NERDDISCO_visualization.addElement(new ndUltraSquare({
   y: 0,
   width: 300,
   height: 300,
+  midiInputCode: 49,
   range: 'high',
   trigger: 180
 }));
@@ -2128,6 +2123,7 @@ NERDDISCO_visualization.addElement(new ndUltraSquare({
   angle: 22.5,
   width: 300,
   height: 300,
+  midiInputCode: 49,
   range: 'high',
   trigger: 180
 }));
@@ -2139,6 +2135,7 @@ NERDDISCO_visualization.addElement(new ndUltraSquare({
   angle: 45,
   width: 300,
   height: 300,
+  midiInputCode: 49,
   range: 'high',
   trigger: 180
 }));
@@ -2150,6 +2147,7 @@ NERDDISCO_visualization.addElement(new ndUltraSquare({
   angle: 67.5,
   width: 300,
   height: 300,
+  midiInputCode: 49,
   range: 'high',
   trigger: 180
 }));
@@ -2411,7 +2409,6 @@ NERDDISCO_visualization.addElement(new ndStar({
   outerRadius: 250,
   innerRadius: 100,
   factor: 1.25
-
 }));
 
 /*

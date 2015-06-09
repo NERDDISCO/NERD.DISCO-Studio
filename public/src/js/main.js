@@ -120,6 +120,7 @@
     y : 0,
     width : 300,
     height : 300,
+    midiInputCode : 49,
     range : 'high',
     trigger: 180
   }));
@@ -131,6 +132,7 @@
     angle : 22.5,
     width : 300,
     height : 300,
+    midiInputCode : 49,
     range : 'high',
     trigger: 180
   }));
@@ -142,6 +144,7 @@
     angle : 45,
     width : 300,
     height : 300,
+    midiInputCode : 49,
     range : 'high',
     trigger: 180
   }));
@@ -153,6 +156,7 @@
     angle : 67.5,
     width : 300,
     height : 300,
+    midiInputCode : 49,
     range : 'high',
     trigger: 180
   }));
@@ -457,7 +461,6 @@
     outerRadius : 250,
     innerRadius : 100,
     factor : 1.25
-
   }));
 
 
