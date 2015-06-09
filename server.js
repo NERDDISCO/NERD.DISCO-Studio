@@ -2,9 +2,9 @@ var express = require('express'),
     app = express(),
     http = require('http').Server(app),
     io = require('socket.io')(http),
-    fadecandyClient = require('./app/fadecandy-client')
+    // fadecandyClient = require('./app/fadecandy-client')
+    fadecandyClient = require('../Fadecandy-Client')
 ;
-
 
 
 var env = process.env.NODE_ENV || 'live';

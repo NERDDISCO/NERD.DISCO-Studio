@@ -52,7 +52,15 @@ ndSoundcloud.prototype = {
    * # Example:
    * loadTrack({ trackURL : 'https://soundcloud.com/blaize323/spongebob-bounce-pants-blaize-remix-edit' })
    */
-  loadTrack : function() {
+  loadTrack : function(args) {
+
+    // Init args if not set
+    args = args || {};
+
+    // The URL to the track
+    this.trackURL = args.trackURL || this.trackURL;
+
+    // Ajax to get the track-JSON for the given trackURL
     this.sdk.get(
       // API endpoint to lookup / access resources for a given SoundCloud URL
       '/resolve',
@@ -67,14 +75,19 @@ ndSoundcloud.prototype = {
         if (typeof track.errors === 'undefined') {
           // Save the track data
           this.track = track;
-          
-          // Create the streamURL using the given clientID
-          this.streamURL = this.track.stream_url + '?client_id=' + this.clientID;
-          
-          // Update the mediaElement
-          this.ndAudio.updateMediaElement(this.streamURL);
-          
-          // successCallback();
+
+          // The track is streamable
+          if (track.streamable) {
+            // Create the streamURL using the given clientID
+            this.streamURL = this.track.stream_url + '?client_id=' + this.clientID;
+
+            // Update the mediaElement
+            this.ndAudio.updateMediaElement(this.streamURL);
+
+          // The track is not streamable D:<
+          } else {
+            console.error('This SoundCloud URL is not allowed to be streamed.');
+          }
           
         // Error while resolving the track
         } else {
@@ -83,8 +96,6 @@ ndSoundcloud.prototype = {
              // Show a specific error message
              console.error(this.functionName, ':', track.errors[i].error_message);
           }
-          
-          // errorCallback();
         }
       
       // Bind ndSoundcloud scope to the function
@@ -92,6 +103,6 @@ ndSoundcloud.prototype = {
       
     ); // / this.sdk.get('/resolve')
     
-  } // / loadStream
+  } // / ndSoundcloud.loadTrack
 
 }; // / ndSoundcloud.prototype

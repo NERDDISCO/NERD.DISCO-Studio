@@ -8,7 +8,9 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     minifyCSS = require('gulp-minify-css'),
     streamqueue  = require('streamqueue'),
-    nodemon = require('gulp-nodemon')
+    nodemon = require('gulp-nodemon'),
+    babel = require('gulp-babel'),
+    addsrc = require('gulp-add-src')
 ;
 
 
@@ -24,11 +26,16 @@ var path = {
 
 // JavaScript paths
 path.js = {
+
   src : [
-    path.root + 'src/js/vendor/*',
-    path.root + 'src/js/NERDDISCO/*',
+    path.root + 'src/js/vendor/*'
+  ],
+
+  babel : [
+    path.root + 'src/js/NERDDISCO/**/*',
     path.root + 'src/js/main.js'
   ],
+
   destination : path.root + 'asset/js/',
   destination_file : 'NERDDISCO.js'
 };
@@ -43,17 +50,21 @@ path.sass = {
 
 
 
-
 /**
  * JS
  */
 gulp.task('js', function() {
     return streamqueue({ objectMode: true },
-        gulp.src(path.js.src)
+        gulp.src(path.js.babel)
     )
+    
     .pipe(plumber())
+    .pipe(babel())
+    .pipe(addsrc(path.js.src))
+
     // .pipe(order(path.js.src))
     .pipe(concat(path.js.destination_file))
+
     // .pipe(uglify())
     .pipe(gulp.dest(path.js.destination))
   ;
@@ -101,7 +112,7 @@ gulp.task('nodemon', function () {
  */
 gulp.task('watcher', function() {
   // watch for JS changes
-  gulp.watch(path.js.src, [ 'js' ]);
+  gulp.watch([path.js.src, path.js.babel], [ 'js' ]);
 
   // watch for SASS changes
   gulp.watch(path.sass.src, [ 'sass' ]);

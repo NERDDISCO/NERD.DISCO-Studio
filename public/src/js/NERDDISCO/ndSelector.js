@@ -151,7 +151,7 @@ ndSelector.prototype = {
    
     // Set the visiblity for the selector_element
     this.selector_element_visible = visible;
-
+// FUCK YOU
     // Set the data-attribute "data-visible" for the selector_element to use it in CSS
     this.selector_element.setAttribute('data-visible', this.selector_element_visible);
   }, // / ndSelector.prototype.setVisible

@@ -20,6 +20,8 @@ function ndVisualization(args) {
 
 
 
+
+
   /*
    * Elements 
    */
@@ -30,9 +32,16 @@ function ndVisualization(args) {
 
 
   /*
-   * ndAudio
+   * @see ndAudio
    */
   this.ndAudio = args.ndAudio || null;
+
+
+
+  /*
+   * @see ndMidi
+   */
+  this.ndMidi = args.ndMidi || null;
 
 
 
@@ -105,8 +114,8 @@ ndVisualization.prototype = {
       this.resize();
       
     }.bind(this), false); // / window.addEventListener('resize')
-    
-    
+
+
 
     // Listen to the mousedown event on the canvas_element
     this.parent_element.addEventListener('mousedown', function(event) {
@@ -154,147 +163,6 @@ ndVisualization.prototype = {
     
     // Resize the canvas_element
     this.resize();
-
-    
-    this.element_queue.push(
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 4,
-        y : this.canvas_element.height / 4,
-        die_sooner : 0,
-        frequency_range : 'sublow',
-        min_frequency : 175
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.2,
-        y : this.canvas_element.height / 2 * 1.2,
-        die_sooner : 0,
-        frequency_range : 'low',
-        min_frequency : 175
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.2,
-        y : this.canvas_element.height / 2 * 1.2,
-        die_sooner : 10,
-        frequency_range : 'low',
-        min_frequency : 185
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 0,
-        frequency_range : 'lowmid'
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 0,
-        frequency_range : 'mid'
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 0,
-        frequency_range : 'highmid',
-        min_frequency : 175,
-        size_multiplicator : 1.3
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 0,
-        frequency_range : 'highmid',
-        min_frequency : 180,
-        size_multiplicator : 1.3
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 10,
-        frequency_range : 'highmid',
-        min_frequency : 180,
-        size_multiplicator : 1.3
-      }),
-
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 0,
-        frequency_range : 'high',
-        min_frequency : 175,
-        size_multiplicator : 1.5
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 0,
-        frequency_range : 'high',
-        min_frequency : 180,
-        size_multiplicator : 1.5
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 10,
-        frequency_range : 'high',
-        min_frequency : 180,
-        size_multiplicator : 1.5
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 0,
-        frequency_range : 'superhigh',
-        min_frequency : 165,
-        size_multiplicator : 1.7
-      }),
-
-      new ndSquare({
-        ndVisualization: this,
-        ndAudio : this.ndAudio,
-        x : this.canvas_element.width / 2 * 1.15,
-        y : this.canvas_element.height / 2 * 1.15,
-        die_sooner : 0,
-        frequency_range : 'superhigh',
-        min_frequency : 175,
-        size_multiplicator : 1.7
-      })
-    );
-
     
   }, // / ndVisualization.prototype.init
   
@@ -302,6 +170,10 @@ ndVisualization.prototype = {
   
   
   
+  /**
+   * Resize the canvas and every ndVisualizationElement. 
+   * 
+   */
   resize : function() {
     
     // Set the width of the canvas_element using the width of the parent_element
@@ -309,7 +181,17 @@ ndVisualization.prototype = {
     
     // Set the height of the canvas_element using the height of the parent_element
     this.canvas_element.height = this.parent_element.clientHeight;
+
+
+
+    // Iterate over all elements in the queue
+    for (var i = 0; i < this.element_queue.length; i++) {
+      // Resize the current element
+      this.element_queue[i].resize();
+    }
     
+
+
     // Redraw the default canvas_context
     this.drawDefaultCanvasContext();
     
@@ -344,7 +226,7 @@ ndVisualization.prototype = {
     // Drawing is not permanent
     if (!this.drawing_permanent) {
       // Redraw the background
-      this.canvas_context.fillStyle = "rgba(0, 0, 0, .35)";
+      this.canvas_context.fillStyle = "rgba(0, 0, 0, .25)";
       this.canvas_context.fillRect(0, 0, this.canvas_element.width, this.canvas_element.height);
     }
     
@@ -360,6 +242,29 @@ ndVisualization.prototype = {
     }
     
   },
+  
+  
+  
+  /**
+   * Add an element to the element_queue.
+   */
+  addElement : function(element) {
+
+    // Reference to ndVisualization
+    element.ndVisualization = this;
+
+    // Set the context
+    element.context = this.canvas_context;
+    
+    // Set the canvas
+    element.canvas = this.canvas_element;
+    
+    // Set audio
+    element.ndAudio = this.ndAudio;
+    
+    // Add the element to the element_queue
+    this.element_queue.push(element);
+  }, // / ndVisualization.addElement
   
   
   /**
@@ -512,5 +417,7 @@ ndVisualization.prototype = {
 
 
 function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  min = Math.floor(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
