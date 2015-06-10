@@ -89,7 +89,7 @@
     ndAudio : NERDDISCO_audio,
     ndMidi : NERDDISCO_midi,
     parent_element : container,
-    drawing_activated : true,
+    drawing_activated : false,
     drawing_permanent : false,
     drawing_square_size : 200,
     selectors : [

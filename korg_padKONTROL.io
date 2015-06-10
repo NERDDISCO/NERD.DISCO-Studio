@@ -1,15 +1,19 @@
 #!/bin/bash
 
+devicePort=$1
+
 # Disconnect
-aconnect -d 24:0 14:0
-aconnect -d 24:1 14:0
-aconnect -d 24:2 14:0
-aconnect -d 14:0 24:0
-aconnect -d 14:0 24:1
+aconnect -d $devicePort:0 14:0
+aconnect -d $devicePort:1 14:0
+aconnect -d $devicePort:2 14:0
+aconnect -d 14:0 $devicePort:0
+aconnect -d 14:0 $devicePort:1
 
 # Connect
-aconnect 24:0 14:0
-aconnect 24:1 14:0
-aconnect 24:2 14:0
-aconnect 14:0 24:0
-aconnect 14:0 24:1
+aconnect $devicePort:0 14:0
+aconnect $devicePort:1 14:0
+aconnect $devicePort:2 14:0
+aconnect 14:0 $devicePort:0
+aconnect 14:0 $devicePort:1
+
+aconnect -oli
