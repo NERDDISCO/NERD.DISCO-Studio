@@ -70,6 +70,8 @@ class ndMidi {
               input.onmidimessage = this.inputMessage.bind(this);
             }
 
+            // TODO: Handle output messages
+
             // A new MIDI device was added or an existing MIDI device changes state
             this.access.onstatechange = function(MIDIConnectionEvent) {
               console.log('MIDIAccess state change:', MIDIConnectionEvent);
@@ -107,14 +109,8 @@ class ndMidi {
     // Input
     var data = message.data;
 
-    // Command
-    var cmd = data[0] >> 4;
-
-    // Channel
-    var channel = data[0] & 0xf;
-
-    // Type
-    var type = data[0];
+    // The current MIDI command
+    var midi_command = data[0].toString(16);
 
     // Note
     var note = data[1];
@@ -122,51 +118,70 @@ class ndMidi {
     // Velocity
     var velocity = data[2];
 
+    // Channel
+    // var channel = data[0] & 0xf;
+    var channel = midi_command.charAt(1);
+
+    // Command
+    var channel_command = midi_command.charAt(0);
+
+    // Type
+    var type = data[0];
+
 
 
     // Do stuff based on the message type
-    switch (type) {
-
-      // Note On
-      case 153:
-        this.noteOn({ cmd : cmd, channel : channel, note : note, velocity : velocity });
-        break;
+    switch (channel_command) {
 
       // Note Off
-      case 137:
-      case 128:
-        this.noteOff({ channel : channel, note : note, velocity : velocity });
+      case '8':
+        this.noteOff({ note : note, velocity : velocity, channel : channel });
         break;
-      
-      // Pitch bend
-      case 233:
-        this.pitchBend({ channel : channel, note : note, velocity : velocity });
+
+      // Note On
+      case '9':
+        this.noteOn({ note : note, velocity : velocity, channel : channel });
+        break;
+
+      // Aftertouch
+      case 'a':
+        this.aftertouch({ note : note, velocity : velocity, channel : channel });
         break;
 
       // Continuous controller
-      case 185:
-        this.continuousController({ channel : channel, note : note, velocity : velocity });
+      case 'b':
+        this.continuousController({ note : note, velocity : velocity, channel : channel });
         break;
 
       // Patch change
-      case 201:
-        this.patchChange({ channel : channel, note : note, velocity : velocity });
+      case 'c':
+        this.patchChange({ note : note, velocity : velocity, channel : channel });
+        break;
+
+      // Channel Pressure
+      case 'd':
+        this.channelPressure({ note : note, velocity : velocity, channel : channel });
+        break;
+
+      // Pitch bend
+      case 'e':
+        this.pitchBend({ note : note, velocity : velocity, channel : channel });
         break;
 
       // (non-musical commands)
-      case 240:
-        this.nonMusicalCommands({ cmd : cmd, channel : channel, note : note, velocity : velocity });
+      case 'f':
+        this.nonMusicalCommand({ note : note, velocity : velocity });
         break;
 
       default:
-        console.log('NEW VALUE', 'cmd', cmd, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity, 'message', message);
+        console.log('UNKOWN VALUE', 'channel_command', channel_command, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity, 'message', message);
 
     } // / switch(type)
 
 
 
     if (this.debug) {
-      //console.log(message.target.name, '|', 'cmd', cmd, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity);
+      console.log(message.target.name, '|', 'channel_command', channel_command, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity);
     }
     
   } // / ndMidi.inputMessage
@@ -240,7 +255,28 @@ class ndMidi {
 
 
 
-  nonMusicalCommands(args) {
+
+  aftertouch(args) {
+    if (this.debug) {
+      console.log('aftertouch', args);
+    }
+  } // / ndMidi.aftertouch
+
+
+
+
+
+  channelPressure(args) {
+    if (this.debug) {
+      console.log('channel pressure', args);
+    }
+  } // / ndMidi.channelPressure
+
+
+
+
+
+  nonMusicalCommand(args) {
     if (this.debug) {
       console.log('(non-musical commands)', args);
     }
