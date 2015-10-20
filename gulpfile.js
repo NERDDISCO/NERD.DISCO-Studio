@@ -53,11 +53,27 @@ path.sass = {
 /**
  * JS
  */
-gulp.task('js', function() {
-    return streamqueue({ objectMode: true },
-        gulp.src(path.js.babel)
-    )
+// gulp.task('js', function() {
+//     return streamqueue({ objectMode: true },
+//         gulp.src(path.js.babel)
+//     )
     
+//     .pipe(plumber())
+//     // .pipe(babel())
+//     .pipe(addsrc(path.js.src))
+
+//     // .pipe(order(path.js.src))
+//     .pipe(concat(path.js.destination_file))
+
+//     // .pipe(uglify())
+//     .pipe(gulp.dest(path.js.destination))
+//   ;
+// });
+
+
+gulp.task('js', function () {
+  return gulp.src(path.js.babel)
+
     .pipe(plumber())
     .pipe(babel())
     .pipe(addsrc(path.js.src))
@@ -69,8 +85,6 @@ gulp.task('js', function() {
     .pipe(gulp.dest(path.js.destination))
   ;
 });
-
-
 
 
 

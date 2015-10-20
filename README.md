@@ -1,8 +1,11 @@
 # NERD DISCO - Studio
 
 
-
-
+http://rasp.io/wp-content/uploads/2014/08/RasPiO-portsplus2-on-pi_1500.jpg
+https://learn.adafruit.com/neopixels-on-raspberry-pi/wiring
+https://github.com/beyondscreen/node-rpi-ws281x-native
+https://photos.google.com/share/AF1QipOrcOfBYa43UniY2txWdH3qL_IlG-BzBofsYh3DK7nAScXOh4mfoPZgG63tMb2foA?key=Y3cyUWhpZEx5c1R3c2dlOFZDUXRkNUdrcUNJWHRB
+http://giphy.com/posts/windows-95-is-20-years-old-today
 
 ## Local
 
@@ -115,6 +118,38 @@ nodemon index.js
 ## fcserver-j
 
 
+
+
+
+
+
+
+
+
+
+## Raspberry Pi WIFI
+
+
+Configure the network adapter
+sudo nano /etc/network/interfaces 
+
+
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+iface default inet dhcp
+
+
+Create the file /etc/wpa_supplicant/wpa_supplicant.conf
+
+Add this to the file
+
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+
+Start the wpa_supplicant using the config
+sudo wpa_supplicant -Dwext -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf
 
 
 -------------------------

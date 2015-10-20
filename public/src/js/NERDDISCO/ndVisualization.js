@@ -226,7 +226,7 @@ ndVisualization.prototype = {
     // Drawing is not permanent
     if (!this.drawing_permanent) {
       // Redraw the background
-      this.canvas_context.fillStyle = "rgba(0, 0, 0, .25)";
+      this.canvas_context.fillStyle = "rgba(0, 0, 0, .3)";
       this.canvas_context.fillRect(0, 0, this.canvas_element.width, this.canvas_element.height);
     }
     

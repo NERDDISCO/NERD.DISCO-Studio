@@ -63,11 +63,21 @@ body {
 
 .meta {
   position: fixed;
-  top: 0;
-  left: 0;
-  padding: .5em;
-  opacity: .5;
+  top: .75em;
+  left: .75em;
+  padding: 0;
   color: #fff;
+  width: 600px;
+  // border: 1px solid #222;
+  background: #15171e;
+  opacity: .35;
+
+  transition: opacity .3s ease-in-out;
+
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 h1 {
@@ -91,37 +101,82 @@ h2 {
 
 
 .player {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  padding: .5em 0;
-  opacity: .15;
-  filter: blur(6px);
-  transition: all .25s ease-in;
-  transform: translate(0, 70%);
-
-  &:hover {
-    opacity: 1;
-    filter: blur(0);
-    transform: translate(0, 0);
-  }
+  padding: .5em .5em 0 0;
 }
 
 #soundcloud__player {
-  width: 50%;
+  width: 100%;
   border-radius: 0;
+  // transform: translateY(100%);
 }
 
-#soundcloud__url {
-  border: none;
-  background: transparent;
-  color: #fff;
+
+.logo {
+  height: 85px;
+}
+
+audio {
+  &::-webkit-media-controls-panel {
+    background: transparent;
+  }
+}
+
+video {
+  display: none;
+  visibility: hidden;
+}
+
+$track-size: 2em;
+
+.tracks {
+  margin: .25em .25em 0 0;
+  padding: 0 0 0 1em;
+  display: inline-block;
+  float: left;
+
+  .track {
+    display: block;
+    width: $track-size;
+    height: $track-size;
+    float: left;
+    cursor: pointer;
+    background: #000;
+    text-align: center;
+    padding: 0;
+    line-height: $track-size;
+    margin: 0 .25em 0 0;
+
+    transition: background .15s ease-in-out;
+
+    &:hover {
+      background: #15171e;
+    }
+  }
+}
+
+
+.buttons {
+  margin: .25em 0 0 0;
+  padding: 0 0 0 .5em;
+  display: inline-block;
+  float: left;
+  text-transform: uppercase;
+  border-left: 1px solid #333;
+}
+
+.ndSelectorToggle {
+  display: inline-block;
+  height: $track-size;
+  cursor: pointer;
+  text-align: center;
   padding: 0 .25em;
-}
+  line-height: $track-size;
+  transition: background .15s ease-in-out;
 
-#soundcloud__load-url {
-  border: none;
-  background: #fff;
-  color: #000;
+  background: #000;
+
+  &:hover {
+    background: #15171e;
+  }
 }

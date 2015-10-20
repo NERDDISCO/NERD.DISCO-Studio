@@ -1,6 +1,8 @@
 .ndSelector {
   position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.5); }
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  -webkit-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out; }
   .ndSelector:after {
     color: #fff;
     position: absolute;
@@ -10,8 +12,10 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     content: attr(data-name); }
+  .ndSelector[data-visible='true'] {
+    opacity: 1; }
   .ndSelector[data-visible='false'] {
-    opacity: .2; }
+    opacity: 0; }
 
 html, body {
   padding: 0;
@@ -71,11 +75,17 @@ html, body {
 
 .meta {
   position: fixed;
-  top: 0;
-  left: 0;
-  padding: .5em;
-  opacity: .5;
-  color: #fff; }
+  top: .75em;
+  left: .75em;
+  padding: 0;
+  color: #fff;
+  width: 600px;
+  background: #15171e;
+  opacity: .35;
+  -webkit-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out; }
+  .meta:hover {
+    opacity: 1; }
 
 h1 {
   font-size: 2em;
@@ -93,39 +103,62 @@ h2 {
   height: 100%; }
 
 .player {
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  padding: .5em 0;
-  opacity: .15;
-  -webkit-filter: blur(6px);
-  filter: blur(6px);
-  -webkit-transition: all .25s ease-in;
-  transition: all .25s ease-in;
-  -webkit-transform: translate(0, 70%);
-  -ms-transform: translate(0, 70%);
-  transform: translate(0, 70%); }
-  .player:hover {
-    opacity: 1;
-    -webkit-filter: blur(0);
-    filter: blur(0);
-    -webkit-transform: translate(0, 0);
-    -ms-transform: translate(0, 0);
-    transform: translate(0, 0); }
+  padding: .5em .5em 0 0; }
 
 #soundcloud__player {
-  width: 50%;
+  width: 100%;
   -webkit-border-radius: 0;
   border-radius: 0; }
 
-#soundcloud__url {
-  border: none;
-  background: transparent;
-  color: #fff;
-  padding: 0 .25em; }
+.logo {
+  height: 85px; }
 
-#soundcloud__load-url {
-  border: none;
-  background: #fff;
-  color: #000; }
+audio::-webkit-media-controls-panel {
+  background: transparent; }
+
+video {
+  display: none;
+  visibility: hidden; }
+
+.tracks {
+  margin: .25em .25em 0 0;
+  padding: 0 0 0 1em;
+  display: inline-block;
+  float: left; }
+  .tracks .track {
+    display: block;
+    width: 2em;
+    height: 2em;
+    float: left;
+    cursor: pointer;
+    background: #000;
+    text-align: center;
+    padding: 0;
+    line-height: 2em;
+    margin: 0 .25em 0 0;
+    -webkit-transition: background .15s ease-in-out;
+    transition: background .15s ease-in-out; }
+    .tracks .track:hover {
+      background: #15171e; }
+
+.buttons {
+  margin: .25em 0 0 0;
+  padding: 0 0 0 .5em;
+  display: inline-block;
+  float: left;
+  text-transform: uppercase;
+  border-left: 1px solid #333; }
+
+.ndSelectorToggle {
+  display: inline-block;
+  height: 2em;
+  cursor: pointer;
+  text-align: center;
+  padding: 0 .25em;
+  line-height: 2em;
+  -webkit-transition: background .15s ease-in-out;
+  transition: background .15s ease-in-out;
+  background: #000; }
+  .ndSelectorToggle:hover {
+    background: #15171e; }

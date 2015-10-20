@@ -16,8 +16,14 @@ class ndMidi {
     // Show debugging logs?
     this.debug = args.debug || false;
 
+    // Input mapping mode activated?
+    this.mappingMode = args.mappingMode || false;
+
     // The active input elements
     this.inputElements = args.inputElements || [];
+
+    // Mapping of input elements
+    this.inputMapping = args.inputMapping || null;
 
   } // / constructor
 
@@ -38,11 +44,11 @@ class ndMidi {
       function(permission) {
 
         if (this.debug) {
-          console.log('"midi" permission:', permission.status);
+          console.log('"midi" permission:', permission.state);
         }
 
         // Permission is granted
-        if (permission.status === 'granted') {
+        if (permission.state === 'granted') {
           // Request access to the MIDI devices
           navigator.requestMIDIAccess({ sysex: true }).then(function(access) {
 
@@ -68,6 +74,18 @@ class ndMidi {
             for (let input of this.inputMap.values()) {
               // Listen to MIDIMessageEvent for this input port
               input.onmidimessage = this.inputMessage.bind(this);
+            }
+
+            // Input mapping exists
+            if (this.inputMapping !== null) {
+              // Iterate over all input element mappings
+              for (var key in this.inputMapping) {
+                var note = this.inputMapping[key];
+
+                this.inputElements[note] = {};
+                this.inputElements[note].pressed = false;
+                this.inputElements[note].velocity = 0;
+              }
             }
 
             // TODO: Handle output messages
@@ -170,7 +188,7 @@ class ndMidi {
 
       // (non-musical commands)
       case 'f':
-        this.nonMusicalCommand({ note : note, velocity : velocity });
+        this.nonMusicalCommand({ note : note, velocity : velocity, type : type });
         break;
 
       default:
@@ -179,9 +197,12 @@ class ndMidi {
     } // / switch(type)
 
 
+    if (this.mappingMode && channel_command !== '9') {
+      console.log(note);
+    }
 
     if (this.debug) {
-      console.log(message.target.name, '|', 'channel_command', channel_command, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity);
+      //console.log(message.target.name, '|', 'channel_command', channel_command, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity);
     }
     
   } // / ndMidi.inputMessage
@@ -199,14 +220,10 @@ class ndMidi {
     if (this.debug) {
       console.log('note on', args);
     }
-
-    if (this.inputElements[args.note] === undefined) {
-      this.inputElements[args.note] = {};
-      this.inputElements[args.note].pressed = false;
-    }
-
-    this.inputElements[args.note] = args;
+    
+    this.inputElements[args.note] = Object.assign(this.inputElements[args.note], args);
     this.inputElements[args.note].pressed = true;
+    this.inputElements[args.note].noteOn = true;
   }
 
 
@@ -221,7 +238,7 @@ class ndMidi {
       console.log('note off', args);
     }
 
-    this.inputElements[args.note] = args;
+    this.inputElements[args.note] = Object.assign(this.inputElements[args.note], args);
     this.inputElements[args.note].pressed = false;
   }
 
@@ -241,6 +258,8 @@ class ndMidi {
     if (this.debug) {
       console.log('continuous controller', args);
     }
+
+    this.inputElements[args.note] = Object.assign(this.inputElements[args.note], args);
   }
 
 

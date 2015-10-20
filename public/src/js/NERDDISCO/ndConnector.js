@@ -7,7 +7,6 @@ function ndConnector(args) {
 
   this.webSocket = null;
 
-
   // Initialize ndConnector
   this.init();
 

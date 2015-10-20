@@ -26,6 +26,9 @@ class ndVisualizationElement {
     // y position
     this.y = args.y || 0;
 
+    // The note (code) of the MIDI input element
+    this.midiInputCode = args.midiInputCode || null;
+
     // Audio data for this element
     this.audio = {
 

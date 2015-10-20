@@ -19,9 +19,10 @@ class ndStrokeCircle extends ndVisualizationElement {
   
   draw() {
     
+    // ndAudio available
     if (this.ndAudio.audioGroupedFrequencyData !== null && 
         typeof this.ndAudio.audioGroupedFrequencyData[this.range] !== 'undefined') {
-      
+  
       this.ctx.save();
       
       this.ctx.globalCompositeOperation = "difference";
@@ -71,6 +72,8 @@ class ndStrokeCircle extends ndVisualizationElement {
 
 
       this.ctx.restore();
-    }
-  }
+
+    } // / ndAudio available
+
+  } // / draw
 }

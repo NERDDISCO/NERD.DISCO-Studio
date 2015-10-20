@@ -1,6 +1,8 @@
 .ndSelector {
   position: absolute;
   border: 1px solid rgba(255, 255, 255, .5);
+
+  transition: opacity .3s ease-in-out;
   
   &:after {
     color: #fff;
@@ -13,11 +15,11 @@
   
   
   &[data-visible='true'] {
-    
+    opacity: 1;
   }
   
   &[data-visible='false'] {
-    opacity: .2;
+    opacity: 0;
     
     &:after {
       //opacity: .1;

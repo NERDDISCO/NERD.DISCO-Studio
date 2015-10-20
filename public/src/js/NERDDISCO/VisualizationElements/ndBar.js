@@ -5,9 +5,10 @@ class ndBar extends ndVisualizationElement {
 
     this.color = args.color || 0;
 
-    this.midiInputCode = args.midiInputCode || null;
     this.range = args.range || null;
     this.trigger = args.trigger || 255;
+
+    this.velocity = 0;
     
     this.audio = {
       frequency : 0
@@ -22,66 +23,67 @@ class ndBar extends ndVisualizationElement {
 
   draw() {
 
-    // The element on the MIDI input exists
-    if (this.ndVisualization.ndMidi.inputElements[this.midiInputCode] !== undefined) {
+    // Audio data available
+    if (this.ndAudio.audioFrequencyData !== null) {
 
-      // The element is pressed
-      if (this.ndVisualization.ndMidi.inputElements[this.midiInputCode].pressed) {
+      this.ctx.save();
 
-        // Audio data available
-        if (this.ndAudio.audioFrequencyData !== null) {
-
-          this.ctx.save();
+      this.audio.frequency = this.ndAudio.audioGroupedFrequencyData[this.range].value;
 
 
-          this._color = this.color + (360 / 127 * this.ndVisualization.ndMidi.inputElements[this.midiInputCode].velocity);
+      //this._color = this.color + (360 / 127 * this.ndVisualization.ndMidi.inputElements[this.midiInputCode].velocity);
 
-          this._velocity = this.ndVisualization.ndMidi.inputElements[this.midiInputCode].velocity / 127 * 4;
+      this._velocity = this.velocity / 127 * 4;
 
-          // this._amount = this.amount || this.ndAudio.audioAnalyser.frequencyBinCount;
-          this._amount = this.ndAudio.audioFrequencyData.length;
+      // this._amount = this.amount || this.ndAudio.audioAnalyser.frequencyBinCount;
+      this._amount = this.ndAudio.audioFrequencyData.length;
 
-          this.sliceWidth = this.canvas.width / this._amount;
+      this.sliceWidth = (this.canvas.width + 250) / this._amount;
 
-          this._x = 0;
+      this._x = 0;
 
-          this.ctx.beginPath();
-          this.ctx.lineWidth = this._velocity;
+      this.ctx.beginPath();
+      this.ctx.lineWidth = this._velocity;
 
+
+
+      // Initial position
+      this.ctx.moveTo(0, this.canvas.height);
+
+      // For each audio frequency
+      for (var i = 0; i < this._amount; i++) {
+        // Calculate y based on the current frequency and the height of the canvas
+        this._y = (this.ndAudio.audioFrequencyData[i] / 255) * (this.canvas.height);
+
+        this._color = this.color + (360 / 255 * this.ndAudio.audioFrequencyData[i]);
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(this._x, this.canvas.height);
+        this.ctx.lineTo(this._x, this._y);
+
+        if (this.ndAudio.audioFrequencyData[i] < 5) {
+          this.ctx.strokeStyle = "rgba(60, 60, 60, 0)";
+        } else {
           this.ctx.strokeStyle = "hsla(" + this._color + ", 100%, 70%, .85)";
-          this.ctx.fillStyle = "hsla(" + this._color + ", 100%, 70%, .35)";
+        }
 
-          // Initial position
-          this.ctx.moveTo(0, this.canvas.height);
+        this.ctx.stroke();
 
-          // For each audio frequency
-          for (var i = 0; i < this._amount; i++) {
-            // Calculate y based on the current frequency and the height of the canvas
-            this._y = (this.ndAudio.audioFrequencyData[i] / 255) * (this.canvas.height / 2);
+        // Increase the x position for the next bar
+        this._x += this.sliceWidth;
 
-            this.ctx.lineTo(this._x, this._y);
+      } // / for each frequency
 
-            // Increase the x position for the next bar
-            this._x += this.sliceWidth;
-
-          } // / for each frequency
-
-          this.ctx.lineTo(this.canvas.width, 0);
+      // this.ctx.lineTo(this.canvas.width + 15, 0);
 
 
-          this.ctx.fill();
-          this.ctx.stroke();
+      // this.ctx.fill();
+      // this.ctx.stroke();
 
 
-          this.ctx.restore();
+      this.ctx.restore();
 
-        } // / Audio data available
-
-      } // / element is pressed
-
-    } // / input element exists
-
-
+    } // / Audio data available
 
 
   } // / ndBar.draw

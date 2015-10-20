@@ -11,6 +11,9 @@ class ndCircle extends ndVisualizationElement {
     this.x = args.x || 0;
     this.y = args.y || 0;
     this.r = args.r || 0;
+
+    this.isToggle = args.isToggle || false;
+    this.toggle = args.toggle || false;
     
     this.audio = {
       frequency : 0
@@ -19,9 +22,10 @@ class ndCircle extends ndVisualizationElement {
   
   draw() {
     
+    // ndAudio available
     if (this.ndAudio.audioGroupedFrequencyData !== null && 
         typeof this.ndAudio.audioGroupedFrequencyData[this.range] !== 'undefined') {
-      
+  
       this.ctx.save();
       
       this.ctx.globalCompositeOperation = "source-over";
@@ -30,10 +34,7 @@ class ndCircle extends ndVisualizationElement {
       this._y = this.canvas.height / 2 + this.y;
       
       this.audio.frequency = this.ndAudio.audioGroupedFrequencyData[this.range].value;
-      
 
-      //this.ctx.strokeStyle = this.color; 
-      
       this._r = this.audio.frequency / 255 * this.r;
 
       this.ctx.beginPath();
@@ -59,7 +60,8 @@ class ndCircle extends ndVisualizationElement {
       this.ctx.fill();
       
       this.ctx.restore();
-      
-    }
-  }
+  
+    } // / ndAudio available
+
+  } // / draw
 }
