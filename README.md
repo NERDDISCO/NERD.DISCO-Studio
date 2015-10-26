@@ -1,11 +1,12 @@
 # NERD DISCO - Studio
 
+useful links:
 
-http://rasp.io/wp-content/uploads/2014/08/RasPiO-portsplus2-on-pi_1500.jpg
-https://learn.adafruit.com/neopixels-on-raspberry-pi/wiring
-https://github.com/beyondscreen/node-rpi-ws281x-native
-https://photos.google.com/share/AF1QipOrcOfBYa43UniY2txWdH3qL_IlG-BzBofsYh3DK7nAScXOh4mfoPZgG63tMb2foA?key=Y3cyUWhpZEx5c1R3c2dlOFZDUXRkNUdrcUNJWHRB
-http://giphy.com/posts/windows-95-is-20-years-old-today
+* http://rasp.io/wp-content/uploads/2014/08/RasPiO-portsplus2-on-pi_1500.jpg
+* https://learn.adafruit.com/neopixels-on-raspberry-pi/wiring
+* https://github.com/beyondscreen/node-rpi-ws281x-native
+* https://photos.google.com/share/AF1QipOrcOfBYa43UniY2txWdH3qL_IlG-BzBofsYh3DK7nAScXOh4mfoPZgG63tMb2foA?key=Y3cyUWhpZEx5c1R3c2dlOFZDUXRkNUdrcUNJWHRB
+* http://giphy.com/posts/windows-95-is-20-years-old-today
 
 ## Local
 
