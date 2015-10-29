@@ -2,15 +2,13 @@
 
 useful links:
 
-* http://rasp.io/wp-content/uploads/2014/08/RasPiO-portsplus2-on-pi_1500.jpg
-* https://learn.adafruit.com/neopixels-on-raspberry-pi/wiring
-* https://github.com/beyondscreen/node-rpi-ws281x-native
-* https://photos.google.com/share/AF1QipOrcOfBYa43UniY2txWdH3qL_IlG-BzBofsYh3DK7nAScXOh4mfoPZgG63tMb2foA?key=Y3cyUWhpZEx5c1R3c2dlOFZDUXRkNUdrcUNJWHRB
-* http://giphy.com/posts/windows-95-is-20-years-old-today
+* <http://rasp.io/wp-content/uploads/2014/08/RasPiO-portsplus2-on-pi_1500.jpg>
+* <https://learn.adafruit.com/neopixels-on-raspberry-pi/wiring>
+* <https://github.com/beyondscreen/node-rpi-ws281x-native>
+* <https://photos.google.com/share/AF1QipOrcOfBYa43UniY2txWdH3qL_IlG-BzBofsYh3DK7nAScXOh4mfoPZgG63tMb2foA?key=Y3cyUWhpZEx5c1R3c2dlOFZDUXRkNUdrcUNJWHRB>
+* <http://giphy.com/posts/windows-95-is-20-years-old-today>
 
 ## Local
-
-
 
 ### Fadecandy Server
 
@@ -82,9 +80,6 @@ nodemon index.js
 ```
 
 
-
-
-
 ------------------------------------
 
 ## Raspberry PI
@@ -132,30 +127,32 @@ nodemon index.js
 
 
 Configure the network adapter
-sudo nano /etc/network/interfaces 
+`sudo nano /etc/network/interfaces`
 
 
-allow-hotplug wlan0
-iface wlan0 inet dhcp
-wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
-iface default inet dhcp
+`allow-hotplug wlan0`
+`iface wlan0 inet dhcp`
+`wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf`
+`iface default inet dhcp`
 
 
-Create the file /etc/wpa_supplicant/wpa_supplicant.conf
+Create the file `/etc/wpa_supplicant/wpa_supplicant.conf`
 
 Add this to the file
 
+```
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
+```
 
 
 Start the wpa_supplicant using the config
-sudo wpa_supplicant -Dwext -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf
+`sudo wpa_supplicant -Dwext -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf`
 
 
 -------------------------
 
 ## Experimental
 
-* http://localhost:8000/?tumblrs=mironart&mode=playback&soundcloud=https://soundcloud.com/express-4/spektral-dnbe-promo-mix-vol-2-15&lul=wut/
-* http://localhost:8000/?tumblrs=kyttenjanae,ohbaekhyuns,money-in-veins&mode=playback&soundcloud=https://soundcloud.com/drumandbass/erb-n-dub-insomnia-2015-re&lul=wut/
+* <http://localhost:8000/?tumblrs=mironart&mode=playback&soundcloud=https://soundcloud.com/express-4/spektral-dnbe-promo-mix-vol-2-15&lul=wut/>
+* <http://localhost:8000/?tumblrs=kyttenjanae,ohbaekhyuns,money-in-veins&mode=playback&soundcloud=https://soundcloud.com/drumandbass/erb-n-dub-insomnia-2015-re&lul=wut/>
