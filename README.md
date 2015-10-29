@@ -157,5 +157,5 @@ sudo wpa_supplicant -Dwext -iwlan0 -c/etc/wpa_supplicant/wpa_supplicant.conf
 
 ## Experimental
 
-http://localhost:8000/?tumblrs=mironart&mode=playback&soundcloud=https://soundcloud.com/express-4/spektral-dnbe-promo-mix-vol-2-15&lul=wut/
-http://localhost:8000/?tumblrs=kyttenjanae,ohbaekhyuns,money-in-veins&mode=playback&soundcloud=https://soundcloud.com/drumandbass/erb-n-dub-insomnia-2015-re&lul=wut/
+* http://localhost:8000/?tumblrs=mironart&mode=playback&soundcloud=https://soundcloud.com/express-4/spektral-dnbe-promo-mix-vol-2-15&lul=wut/
+* http://localhost:8000/?tumblrs=kyttenjanae,ohbaekhyuns,money-in-veins&mode=playback&soundcloud=https://soundcloud.com/drumandbass/erb-n-dub-insomnia-2015-re&lul=wut/
