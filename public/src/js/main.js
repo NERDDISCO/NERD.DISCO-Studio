@@ -60,7 +60,9 @@ var button_korg_padKONTROL = {
   p : 58,
 
   knob_a : 20,
-  knob_b : 21
+  knob_b : 21,
+
+  pad_y : 1
 };
 
 
@@ -69,7 +71,7 @@ var button = button_korg_padKONTROL;
 
 
 
-
+  var pixel_per_led = 20;
 
 
  
@@ -78,33 +80,35 @@ var button = button_korg_padKONTROL;
    */
   var NERDDISCO_selector_front = new ndSelector({
     parent_element : container,
-    selector_element_name : 'FRONT',
-    selector_element_x : 500
+    selector_element_name : ' ',
+    selector_element_x : 500,
+    selector_element_width : pixel_per_led * 8 + 'px',
+    selector_element_height : pixel_per_led * 8 + 'px'
   });
 
-  var NERDDISCO_selector_right = new ndSelector({
-    parent_element : container,
-    selector_element_name : 'RIGHT',
-    selector_element_x : 500
-  });
+  // var NERDDISCO_selector_right = new ndSelector({
+  //   parent_element : container,
+  //   selector_element_name : 'RIGHT',
+  //   selector_element_x : 500
+  // });
 
-  var NERDDISCO_selector_left = new ndSelector({
-    parent_element : container,
-    selector_element_name : 'LEFT',
-    selector_element_x : 500
-  });
+  // var NERDDISCO_selector_left = new ndSelector({
+  //   parent_element : container,
+  //   selector_element_name : 'LEFT',
+  //   selector_element_x : 500
+  // });
 
-  var NERDDISCO_selector_top = new ndSelector({
-    parent_element : container,
-    selector_element_name : 'TOP',
-    selector_element_x : 500
-  });
+  // var NERDDISCO_selector_top = new ndSelector({
+  //   parent_element : container,
+  //   selector_element_name : 'TOP',
+  //   selector_element_x : 500
+  // });
 
-  var NERDDISCO_selector_back = new ndSelector({
-    parent_element : container,
-    selector_element_name : 'BACK',
-    selector_element_x : 500
-  });
+  // var NERDDISCO_selector_back = new ndSelector({
+  //   parent_element : container,
+  //   selector_element_name : 'BACK',
+  //   selector_element_x : 500
+  // });
 
 
 
@@ -124,7 +128,7 @@ var button = button_korg_padKONTROL;
    * MIDI
    */
   var NERDDISCO_midi = new ndMidi({
-    debug : false,
+    debug : true,
     mappingMode : false,
     inputMapping : button
   });
@@ -162,12 +166,13 @@ var button = button_korg_padKONTROL;
     drawing_activated : false,
     drawing_permanent : false,
     drawing_square_size : 200,
+    pixel_per_led : pixel_per_led,
     selectors : [
       NERDDISCO_selector_front,
-      NERDDISCO_selector_right,
-      NERDDISCO_selector_left,
-      NERDDISCO_selector_top,
-      NERDDISCO_selector_back
+      // NERDDISCO_selector_right,
+      // NERDDISCO_selector_left,
+      // NERDDISCO_selector_top,
+      // NERDDISCO_selector_back
     ]
   });
 
@@ -213,7 +218,7 @@ NERDDISCO_giphy = new ndGiphy({
     '4MIiLGFlKXm8g',
     '14bPSP6sM7Ynte',
     '8Jj9OcQjKJQFG',
-    'EUINY8p7L6NO0',
+    /*'EUINY8p7L6NO0',
     'rlZQe2eKN4gW4',
     'bSnLUTin6l7NK',
     'AaDszWb0lRbe8',
@@ -246,7 +251,7 @@ NERDDISCO_giphy = new ndGiphy({
     'vyKWyMxjYWunC',
     '7H3WY55yh5IRi',
     'TShGnCEYfbt1S',
-    '8NWqbYfNjyQH6'
+    '8NWqbYfNjyQH6'*/
   ]
 });
 
@@ -657,6 +662,27 @@ NERDDISCO_giphy.request();
 
 
 
+  NERDDISCO_visualization.addElement(new ndGlobalAlpha({
+    midiInputCode : button.knob_b
+  }));
+
+
+
+if (window.rangeMapper != undefined) {
+  var tiltMapper = rangeMapper(0, 127, -115, 90);
+  var panMapper = rangeMapper(0, 127, -270, 270);
+
+  NERDDISCO_visualization.addElement(new ndXYPad({
+    midiInputCode : button.pad_y,
+    tiltMapper : tiltMapper,
+    panMapper : panMapper
+  }));
+}
+
+
+
+
+
 
 
 
@@ -700,14 +726,15 @@ NERDDISCO_giphy.request();
     // trackURL : 'https://soundcloud.com/otto-von-schirach/pepe-y-otto-cadillac-culo'
     // trackURL : 'https://soundcloud.com/buygore/focuspotion'
     // trackURL : 'https://soundcloud.com/worakls/worakls-live-act-2013'
+    trackURL : 'https://soundcloud.com/cero39-remixes/toro-rojo-no-sentao-cero39'
     
   });
 
-  // NERDDISCO_soundcloud.loadTrack();
-  // 
-  // 
+  NERDDISCO_soundcloud.loadTrack();
+  
+  
   // NERDDISCO_audio.updateMediaElement('http://nerddiscodata.local/Bassnectar_Generate.mp3');
-  NERDDISCO_audio.updateMediaElement('http://nerddiscodata.local/Bassnectar_Mixtape.mp3');
+  // NERDDISCO_audio.updateMediaElement('http://nerddiscodata.local/Bassnectar_Mixtape.mp3');
   // NERDDISCO_audio.updateMediaElement('http://nerddiscodata.local/Worakls - Live act 2013.mp3');
   // NERDDISCO_audio.updateMediaElement('http://nerddiscodata.local/Netsky - Detonate.mp3');
 
@@ -716,8 +743,7 @@ NERDDISCO_giphy.request();
   /*
    * Connector
    */
-  var NERDDISCO_connector = new ndConnector({});
-  // 
+  // var NERDDISCO_connector = new ndConnector({}); 
 
 
 
@@ -773,9 +799,11 @@ NERDDISCO_giphy.request();
    * - LED
    * - audio data
    */
-  var fps = 60;
+  var fps = 42;
   var audioData;
   var counter = 0;
+  var data = "";
+
 
   function update() {
     // Update the audio data
@@ -784,9 +812,24 @@ NERDDISCO_giphy.request();
     // Draw on canvas
     NERDDISCO_visualization.draw();
 
+    // Get data
+    data = NERDDISCO_visualization.getLEDs();
+
+    if (window.registry != undefined) {
+      // registry.getAll().brightness = 1;
+      
+      for (var i = 0; i < registry.devices.length; i++) {
+        var j = i * 3;
+        registry.devices[i].color = 'rgb('+data[j]+','+data[j + 1]+','+data[j + 2]+')';
+      };
+
+
+    }
+
+
     // Get the RGB values for the specified selector areas and send them via WebSocket to the Node.js-Server
     // NERDDISCO_visualization.getLEDs();
-    NERDDISCO_connector.sendLEDs(NERDDISCO_visualization.getLEDs());
+    // NERDDISCO_connector.sendLEDs(data);
 
 
     setTimeout(function() {

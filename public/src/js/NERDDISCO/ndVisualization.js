@@ -71,7 +71,7 @@ function ndVisualization(args) {
    * LED
    */
   // Amount of pixel that are used per LED (pixel_per_led * pixel_per_led)
-  this.pixel_per_led = 10;
+  this.pixel_per_led = args.pixel_per_led || 10;
 
   // Amount of LED in every row
   this.led_row_amount = 8;

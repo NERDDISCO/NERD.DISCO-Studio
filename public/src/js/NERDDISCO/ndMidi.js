@@ -202,7 +202,7 @@ class ndMidi {
     }
 
     if (this.debug) {
-      //console.log(message.target.name, '|', 'channel_command', channel_command, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity);
+      // console.log(message.target.name, '|', 'channel_command', channel_command, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity);
     }
     
   } // / ndMidi.inputMessage
@@ -249,6 +249,12 @@ class ndMidi {
     if (this.debug) {
       console.log('pitch bend', args);
     }
+
+    if (this.inputElements[1337] == undefined) {
+      this.inputElements[1337] = args;
+    } else {
+      this.inputElements[1337] = Object.assign(this.inputElements[1337], args);
+    }
   }
 
 
@@ -259,7 +265,10 @@ class ndMidi {
       console.log('continuous controller', args);
     }
 
-    this.inputElements[args.note] = Object.assign(this.inputElements[args.note], args);
+    if (this.inputElements[args.note] != undefined) {
+      this.inputElements[args.note] = Object.assign(this.inputElements[args.note], args);
+    }
+    
   }
 
 

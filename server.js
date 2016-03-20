@@ -58,12 +58,15 @@ http.listen(1337, function(){
 // 
 // 
 
-
 var pixels = null;
 var color = { red : 0, green : 0, blue : 0 };
 
 // Connect to the Fadecandy Server
-var client = new fadecandyClient('nerddisco.slave', 7890);
+var client = new fadecandyClient({
+  // host: '192.168.178.119',
+  host: 'localhost',
+  port: 7890
+});
 
 
 

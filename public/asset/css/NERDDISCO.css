@@ -1,6 +1,6 @@
 .ndSelector {
   position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 5px solid rgba(255, 255, 255, 0.5);
   -webkit-transition: opacity .3s ease-in-out;
   transition: opacity .3s ease-in-out; }
   .ndSelector:after {
