@@ -15,10 +15,10 @@ function ndSelector(args) {
   this.selector_element_class = args.selector_element_class || 'ndSelector';
   
   // The width of the selector_element (default: 10 real pixel / LED (8 LEDs per row))
-  this.selector_element_width = args.selector_element_width || 10 * 8 + 'px';
+  this.selector_element_width = args.selector_element_width || 10 * 8;
   
   // The height of the selector_element (default: 10 real pixel / LED (8 LEDs per row))
-  this.selector_element_height = args.selector_element_height || 10 * 8 + 'px';
+  this.selector_element_height = args.selector_element_height || 10 * 8;
   
 
 
@@ -79,10 +79,10 @@ ndSelector.prototype = {
       this.selector_element.className = this.selector_element_class + ' ' + 'draggable';
       
       // Set the width of the selector_element
-      this.selector_element.style.width = this.selector_element_width;
+      this.selector_element.style.width = this.selector_element_width + 'px';
       
       // Set the height of the selector_element
-      this.selector_element.style.height = this.selector_element_height;
+      this.selector_element.style.height = this.selector_element_height + 'px';
 
       // Set the initial y position of the selector_element
       // this.selector_element.style.top = this.selector_element_y + 'px';
@@ -100,11 +100,55 @@ ndSelector.prototype = {
       
       // Add the selecotr_element to the parent_element
       this.parent_element.appendChild(this.selector_element);
+
+
+      // Mouse was released
+      this.selector_element.addEventListener('mouseup', function(e) {
+
+        var x = parseInt(this.selector_element.getAttribute('data-x'));
+        var y = parseInt(this.selector_element.getAttribute('data-y'));
+
+        this.current_x = x;
+        this.current_y = y;
+
+      }.bind(this), false);
+
+
+      // Current position
+      this.current_x = parseInt(this.selector_element_x);
+      this.current_y = parseInt(this.selector_element_y);
     }
     
   }, // / ndSelector.prototype.init
   
   
+
+
+  changePosition : function(x, y) {
+
+    var _x, _y;
+
+    // Default position
+    if (x == 0 && y == 0) {
+      _x = this.current_x;
+      _y = this.current_y;
+
+    // Super awesome position
+    } else {
+      _x = this.current_x + x * 1.5;
+      _y = this.current_y - y * 1.5;
+    }
+
+    // translate the element
+    this.selector_element.style.webkitTransform =
+    this.selector_element.style.transform = 'translate(' + _x + 'px, ' + _y + 'px)';
+
+    // update the posiion attributes
+    this.selector_element.setAttribute('data-x', _x);
+    this.selector_element.setAttribute('data-y', _y);
+  },
+
+
   
   
   
@@ -114,7 +158,7 @@ ndSelector.prototype = {
   getPosition : function() {
 
     // Get the current x position from the selector_element
-    this.selector_element_x = this.selector_element.getAttribute('data-x');
+    this.selector_element_x = parseInt(this.selector_element.getAttribute('data-x'));
 
     // Save the current x position into localStorage
     window.localStorage[this.selector_element_name + 'x'] = this.selector_element_x;
@@ -122,7 +166,7 @@ ndSelector.prototype = {
 
 
     // Get the current y position from the selector_element
-    this.selector_element_y = this.selector_element.getAttribute('data-y');
+    this.selector_element_y = parseInt(this.selector_element.getAttribute('data-y'));
 
     // Save the current y position into localStorage
     window.localStorage[this.selector_element_name + 'y'] = this.selector_element_y;
@@ -191,8 +235,7 @@ interact('.draggable')
 
       // translate the element
       target.style.webkitTransform =
-      target.style.transform =
-        'translate(' + x + 'px, ' + y + 'px)';
+      target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
 
       // update the posiion attributes
       target.setAttribute('data-x', x);

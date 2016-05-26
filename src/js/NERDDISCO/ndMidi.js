@@ -202,7 +202,7 @@ class ndMidi {
     }
 
     if (this.debug) {
-      // console.log(message.target.name, '|', 'channel_command', channel_command, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity);
+      console.log(message.target.name, '|', 'channel_command', channel_command, 'channel', channel, 'type', type, 'note', note, 'velocitiy', velocity);
     }
     
   } // / ndMidi.inputMessage

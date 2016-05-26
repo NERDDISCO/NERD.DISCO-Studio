@@ -69,7 +69,7 @@ class ndGiphyElement extends ndVisualizationElement {
 
           // Update the active video element
           this.video = this.ndGiphy.gifs[this.ndGiphy.currentId].video;
-
+          
           // Start the video playback
           this.video.play();
         }

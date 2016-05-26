@@ -52,11 +52,11 @@ http.listen(1337, function(){
 //   }
 
 // });
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
 
 var pixels = null;
 var color = { red : 0, green : 0, blue : 0 };
@@ -65,7 +65,8 @@ var color = { red : 0, green : 0, blue : 0 };
 var client = new fadecandyClient({
   // host: '192.168.178.119',
   host: 'localhost',
-  port: 7890
+  port: 7890,
+  debug : false
 });
 
 
@@ -87,6 +88,7 @@ socket_studio.on('connection', function(socket) {
 
   // Received and LED array from the client
   socket.on('NERDDISCO.input', function(data) {
+
     // // Send the data to the slaves
     // socket_slaves.emit('NERDDISCO.output', data);
 
@@ -134,9 +136,9 @@ socket_studio.on('connection', function(socket) {
 
 /**
  * Extract the pixel data from the given position
- * 
+ *
  * @param  Interger position
- * 
+ *
  * @return Object pixel
  */
 function getPixel(position) {
@@ -157,7 +159,7 @@ function getPixel(position) {
   } else {
     // Black
     pixel.a = pixel.r = pixel.g = pixel.b = 0;
-    
+
   }
 
   return pixel;

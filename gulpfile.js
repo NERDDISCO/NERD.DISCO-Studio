@@ -21,29 +21,30 @@ var gulp = require('gulp'),
  * Paths
  */
 var path = {
-  root : 'public/'
+  root_src : 'src/',
+  root_public : 'public/'
 };
 
 // JavaScript paths
 path.js = {
 
   src : [
-    path.root + 'src/js/vendor/*'
+    path.root_src + 'js/vendor/*'
   ],
 
   babel : [
-    path.root + 'src/js/NERDDISCO/**/*',
-    path.root + 'src/js/main.js'
+    path.root_src + 'js/NERDDISCO/**/*',
+    path.root_src + 'js/main.js'
   ],
 
-  destination : path.root + 'asset/js/',
+  destination : path.root_public + 'asset/js/',
   destination_file : 'NERDDISCO.js'
 };
 
 // SASS paths
 path.sass = {
-  src : path.root + 'src/sass/*',
-  destination : path.root + 'asset/css/',
+  src : path.root_src + 'sass/*',
+  destination : path.root_public + 'asset/css/',
   destination_file : 'NERDDISCO.css'
 };
 

@@ -3,8 +3,6 @@
 
 window.onload = function() {
 
-
-
   /*
    * Container for the NERD DISCO, you might say it's a party.
    */
@@ -82,8 +80,8 @@ var button = button_korg_padKONTROL;
     parent_element : container,
     selector_element_name : ' ',
     selector_element_x : 500,
-    selector_element_width : pixel_per_led * 8 + 'px',
-    selector_element_height : pixel_per_led * 8 + 'px'
+    selector_element_width : pixel_per_led * 8,
+    selector_element_height : pixel_per_led * 8
   });
 
   // var NERDDISCO_selector_right = new ndSelector({
@@ -128,7 +126,7 @@ var button = button_korg_padKONTROL;
    * MIDI
    */
   var NERDDISCO_midi = new ndMidi({
-    debug : true,
+    debug : false,
     mappingMode : false,
     inputMapping : button
   });
@@ -667,17 +665,15 @@ NERDDISCO_giphy.request();
   }));
 
 
-
-if (window.rangeMapper != undefined) {
-  var tiltMapper = rangeMapper(0, 127, -115, 90);
-  var panMapper = rangeMapper(0, 127, -270, 270);
+  // var tiltMapper = rangeMapper(0, 127, 0, 250);
+  // var panMapper = rangeMapper(0, 127, 0, 250);
 
   NERDDISCO_visualization.addElement(new ndXYPad({
     midiInputCode : button.pad_y,
-    tiltMapper : tiltMapper,
-    panMapper : panMapper
+    selector : NERDDISCO_selector_front
+    // tiltMapper : tiltMapper,
+    // panMapper : panMapper
   }));
-}
 
 
 
@@ -743,7 +739,7 @@ if (window.rangeMapper != undefined) {
   /*
    * Connector
    */
-  // var NERDDISCO_connector = new ndConnector({}); 
+  var NERDDISCO_connector = new ndConnector({}); 
 
 
 
@@ -826,10 +822,8 @@ if (window.rangeMapper != undefined) {
 
     }
 
-
     // Get the RGB values for the specified selector areas and send them via WebSocket to the Node.js-Server
-    // NERDDISCO_visualization.getLEDs();
-    // NERDDISCO_connector.sendLEDs(data);
+    NERDDISCO_connector.sendLEDs(data);
 
 
     setTimeout(function() {

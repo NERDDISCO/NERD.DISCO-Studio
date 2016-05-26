@@ -58,7 +58,7 @@ class ndStar extends ndVisualizationElement {
         this.ctx.beginPath();
         this.ctx.moveTo(this._x * this._velocity, this._y * this._velocity - this._outerRadius);
 
-        for (i = 0; i < this.spikes; i++) {
+        for (var i = 0; i < this.spikes; i++) {
             this._x = this.x * this._velocity + Math.cos(this.rotate) * this._outerRadius;
             this._y = this.y * this._velocity + Math.sin(this.rotate) * this._outerRadius;
             this.ctx.lineTo(this._x, this._y);
